@@ -1,7 +1,9 @@
-import Vue from 'vue'
-import Vuex from 'vuex'
-import * as actions from './actions'
-import * as getters from './getters'
+import Vue from 'vue';
+import Vuex from 'vuex';
+import router from '../router';
+import * as actions from './actions';
+import * as getters from './getters';
+import permission from './modules/permission';
 import { asyncRouterMap, constantRouterMap } from '../router/index';
 Vue.use(Vuex)
 
@@ -14,7 +16,7 @@ const state = {
 // 定义所需的 mutations
 const mutations = {
     INCREMENT(state) {
-        // router.addRoutes(state.count)
+        router.addRoutes(state.Vue_router)
         state.count++
     },
     DECREMENT(state) {
@@ -26,6 +28,7 @@ const mutations = {
 export default new Vuex.Store({
     actions,
     getters,
+    permission,
     state,
     mutations,
 })

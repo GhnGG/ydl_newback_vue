@@ -95,6 +95,7 @@ export default {
 <style lang="css">
 .left_active {
     width: 15%;
+    min-width: 150px;
     height: 100% ;
     background-color: #aab1a7;
     float: left;
@@ -106,6 +107,7 @@ export default {
 }
 .content-wrapper {
     width: 85% !important;
+    min-width: 600px;
     height: 100%;
 
     float: left;

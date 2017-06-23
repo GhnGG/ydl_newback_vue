@@ -1,7 +1,7 @@
 <template lang="html">
     <el-row class="container">
         <!-- 头部的导航栏 -->
-        <el-menu theme="dark" :default-active="activeIndex" class="el-menu-demo" mode="horizontal" @select="handleSelect">
+        <el-menu theme="dark" :default-active="activeIndex" class="el-menu-demo nav-head" mode="horizontal" @select="handleSelect">
           <div class="logo"></div>
           <el-menu-item index="1"><router-link to="/yunyinshuju">运营数据</router-link></el-menu-item>
           <el-menu-item index="2">运营支撑</el-menu-item>
@@ -85,30 +85,22 @@ export default {
 .logo {
     display: inline-block;
     float: left;
-    width: 50px;
-    height: 50px;
-    background-image: url(../assets/logo.png) ;
+    width: 58px;
+    height: 28px;
+    background-image: url(../assets/dianliao-logo.png) ;
     background-size: cover;
-    margin:0 10px 0 50px;
-
-
+    margin:15px 10px 0 50px;
 }
 .nav-view {
     width: 100%;
+    min-width: 1080px;
 }
-/*.left_active {
-    width: 15%;
-    height: 100% ;
-    background-color: #aab1a7;
-    float: left;
+.nav-head {
+    min-width: 1080px;
 }
-.content-container {
-    display: inline-block;
-    overflow-y: scroll;
-    padding: 20px;
+.container　{
+    min-width: 1080px;
+    min-height: 660px;
 }
-.content-wrapper {
-    width: 85% !important;
-    float: left;
-}*/
+
 </style>

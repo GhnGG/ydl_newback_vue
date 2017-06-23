@@ -19,42 +19,15 @@ export const constantRouterMap = [
         path:'/home',
         component:Home,
         name:'',
-        hidden:false
+        hidden:true
     },
-    {
-        path: '/',
-        component: Home,
-        name: '运营数据',
-        iconCls: 'el-icon-message',//图标样式class
-        children: [
-            {
-                path: '/yunyinshuju',
-                component: yunyin,
-                name: '主页',
-                hidden: false ,
-                children: [
-                    { path: '/hello', component: Hello, name: '欢迎', hidden: false },
-                ]
-            },
-        ]
-    },
+
 ]
 export default new VueRouter({
   routes:constantRouterMap
 })
 export const asyncRouterMap = [
-    {
-        path:'/login',
-        component:Login,
-        name:'',
-        hidden:true
-    },
-    {
-        path:'/home',
-        component:Home,
-        name:'',
-        hidden:false
-    },
+
     {
         path: '/',
         component: Home,
@@ -68,7 +41,7 @@ export const asyncRouterMap = [
                 hidden: false ,
                 children: [
                     { path: '/user', component: User, name: '用户', hidden: false },
-                    { path: '/dataSynthesis', component: graphic, name: '综合数据', hidden: false },
+                    { path: '/dataSynthesis', component: graphic, name: '综合数据', hidden: false ,meta: { role: ['admin'] }},
                     { path: '/hello', component: Hello, name: '欢迎', hidden: false },
                 ]
             },
@@ -76,39 +49,3 @@ export const asyncRouterMap = [
     },
     { path: '*', redirect: '/404', hidden: true }
 ]
-// let routes = [
-//     {
-//         path:'/login',
-//         component:Login,
-//         name:'',
-//         hidden:true
-//     },
-//     {
-//         path:'/home',
-//         component:Home,
-//         name:'',
-//         hidden:false
-//     },
-//     {
-//         path: '/',
-//         component: Home,
-//         name: '运营数据',
-//         iconCls: 'el-icon-message',//图标样式class
-//         children: [
-//             {
-//                 path: '/yunyinshuju',
-//                 component: yunyin,
-//                 name: '主页',
-//                 hidden: false ,
-//                 children: [
-//                     { path: '/user', component: User, name: '用户', hidden: false },
-//                     { path: '/dataSynthesis', component: graphic, name: '综合数据', hidden: false },
-//                     { path: '/hello', component: Hello, name: '欢迎', hidden: false },
-//                 ]
-//             },
-//         ]
-//     },
-//
-// ]
-
-// export default routes;
