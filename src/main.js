@@ -18,7 +18,6 @@ Vue.use(ElementUI);
 // Vue.use(VueRouter);
 // Vue.use(Vuex);
 // Vue.use(axios);
-
 // const router = new VueRouter({
 //   routes:constantRouterMap
 // })
