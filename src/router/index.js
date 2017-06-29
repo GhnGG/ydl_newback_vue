@@ -7,6 +7,7 @@ import User from '../User/user.vue'
 import yunyin from '../Home/yunyinshuju.vue'
 import graphic from '../graphic/dataSynthesis.vue'
 import Hello from '../Home/hello.vue'
+import Err401 from '../error/401.vue'
 Vue.use(VueRouter);
 export const constantRouterMap = [
     {
@@ -33,19 +34,13 @@ export const asyncRouterMap = [
         component: Home,
         name: '运营数据',
         iconCls: 'el-icon-message',//图标样式class
+        // meta: { role: ['admin'] },
         children: [
-            {
-                path: '/yunyinshuju',
-                component: yunyin,
-                name: '主页',
-                hidden: false ,
-                children: [
-                    { path: '/user', component: User, name: '用户', hidden: false },
-                    { path: '/dataSynthesis', component: graphic, name: '综合数据', hidden: false ,meta: { role: ['admin'] }},
-                    { path: '/hello', component: Hello, name: '欢迎', hidden: false },
-                ]
-            },
+            { path: '/user', component: User, name: '用户', hidden: false },
+            { path: '/dataSynthesis', component: graphic, name: '综合数据', hidden: false ,meta: { role: ['admin'] }},
+            { path: '/hello', component: Hello, name: '欢迎', hidden: false },
+            { path: '/401', component: Err401, name: '401' },
         ]
     },
-    { path: '*', redirect: '/404', hidden: true }
+    { path: '*', redirect: '/401', hidden: true }
 ]

@@ -2,8 +2,10 @@
 import { asyncRouterMap, constantRouterMap } from '../../router/index';
 
 function hasPermission(roles, route) {
+    // console.log(route.meta && route.meta.role);
   if (route.meta && route.meta.role) {
     return roles.some(role => route.meta.role.indexOf(role) >= 0)
+
   } else {
     return true
   }
@@ -24,15 +26,19 @@ const permission = {
 
   actions: {
     GenerateRoutes({ commit }, data) {
+        // console.log(data);
         return new Promise(resolve => {
             const { roles } = data;
             const accessedRouters = asyncRouterMap.filter(v => {
+                // console.log(v);
                 if (roles.indexOf('admin') >= 0) return true;
                 if (hasPermission(roles, v)) {
+                    // console.log(v.children);
                     if (v.children && v.children.length > 0) {
                         v.children = v.children.filter(child => {
                             if (hasPermission(roles, child)) {
                               return child
+                            //   console.log(child);
                             }
                             return false;
                         });

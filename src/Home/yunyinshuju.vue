@@ -10,6 +10,7 @@
                         <router-link to="/dataSynthesis"><el-menu-item index="1-2">图形数据</el-menu-item></router-link>
                         <router-link to="/user"><el-menu-item index="1-3">用户</el-menu-item></router-link>
                         <!-- <el-menu-item index="1-2"><router-link to="/user">用户</router-link></el-menu-item> -->
+                        <router-link to="/401"><el-menu-item index="1-4">用户3</el-menu-item></router-link>
                     </el-menu-item-group>
                     <!-- <el-menu-item-group title="分组2">
                       <el-menu-item index="1-3">选项3</el-menu-item>

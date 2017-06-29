@@ -18,17 +18,55 @@
               </el-dropdown>
           </el-col>
         </el-menu>
-        <transition name="fade" mode="out-in">
-            <router-view  class="nav-view">
+        <!-- 左侧的导航栏 -->
+        <div class="left_active">
+            <el-menu default-active="1-1"  class="el-menu-vertical-demo " @open="handleOpen" @close="handleClose" >
+                <el-submenu index="1" >
+                    <template slot="title"><i class="el-icon-message"></i>综合概况</template>
+                    <el-menu-item-group>
+                        <router-link to="/hello"><el-menu-item index="1-1">首页</el-menu-item></router-link>
+                        <router-link to="/dataSynthesis"><el-menu-item index="1-2">图形数据</el-menu-item></router-link>
+                        <router-link to="/user"><el-menu-item index="1-3">用户</el-menu-item></router-link>
+                        <router-link to="/401"><el-menu-item index="1-4">用户3</el-menu-item></router-link>
+                    </el-menu-item-group>
+                </el-submenu>
+            </el-menu>
+        </div>
+        <!-- <div class="">
+            <template v-for="item in routes">
+                <router-link v-if="!item.hidden&&item.noDropdown&&item.children.length>0" :to="item.path+'/'+item.children[0].path">
+                    <el-menu-item :index="item.path+'/'+item.children[0].path">
+                        <wscn-icon-svg v-if='item.icon' :icon-class="item.icon" /> {{item.children[0].name}}
+                    </el-menu-item>
+                </router-link>
+                <el-submenu :index="item.name" v-if="!item.noDropdown&&!item.hidden">
+                    <template slot="title">
+                        <wscn-icon-svg v-if='item.icon' :icon-class="item.icon" /> {{item.name}}
+                    </template>
+                    <template v-for="child in item.children" v-if='!child.hidden'>
+                        <sidebar-item class='menu-indent' v-if='child.children&&child.children.length>0' :routes='[child]'> </sidebar-item>
+                        <router-link v-else class="menu-indent" :to="item.path+'/'+child.path">
+                            <el-menu-item :index="item.path+'/'+child.path">
+                                {{child.name}}
+                            </el-menu-item>
+                        </router-link>
+                    </template>
+                </el-submenu>
+            </template>
+        </div> -->
+        <el-col :span="24" class="content-wrapper">
+            <transition name="fade" mode="out-in" >
+                <router-view  class="nav-view">
 
-            </router-view>
-        </transition>
-
+                </router-view>
+            </transition>
+        </el-col>
     </el-row>
 
 </template>
 
 <script>
+import store from '../vuex/store';
 export default {
      data() {
       return {
@@ -36,7 +74,13 @@ export default {
         activeIndex2: '1',
         sysUserName: '',
         sysUserAvatar: 'http://imgtu.5011.net/uploads/content/20170410/2880121491810236.jpg',
+        routes:"",
       };
+    },
+    mounted:function(){
+        this.$nextTick(function(){
+            this.routes = store.getters.addRouters
+        })
     },
     methods: {
         handleSelect(key, keyPath) {
@@ -102,5 +146,23 @@ export default {
     min-width: 1080px;
     min-height: 660px;
 }
+.left_active {
+    width: 15%;
+    min-width: 150px;
+    height: 100% ;
+    background-color: #aab1a7;
+    float: left;
+}
+.content-container {
+    display: inline-block;
+    overflow-y: scroll;
+    padding: 20px;
+}
+.content-wrapper {
+    width: 85% !important;
+    min-width: 600px;
+    height: 100%;
 
+    float: left;
+}
 </style>
