@@ -2,6 +2,7 @@
     <el-row class="container">
         <!-- 头部的导航栏 -->
         <el-menu theme="dark" :default-active="activeIndex" class="el-menu-demo nav-head" mode="horizontal" router="true" @select="handleSelect">
+
           <div class="logo"></div>
           <el-menu-item index="/yunyinshuju">运营数据</el-menu-item>
           <el-menu-item index="/operationSupport">运营支撑</el-menu-item>
@@ -44,6 +45,7 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex';
 import store from '../vuex/store';
 export default {
      data() {
@@ -60,6 +62,11 @@ export default {
     //         this.routes = store.getters.addRouters
     //     })
     // },
+    computed: {
+        ...mapGetters([
+          'permission_routers'
+        ])
+    },
     methods: {
         handleSelect(key, keyPath) {
             console.log(key, keyPath);
