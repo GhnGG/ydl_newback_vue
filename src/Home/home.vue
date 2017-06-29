@@ -1,10 +1,10 @@
 <template lang="html">
     <el-row class="container">
         <!-- 头部的导航栏 -->
-        <el-menu theme="dark" :default-active="activeIndex" class="el-menu-demo nav-head" mode="horizontal" @select="handleSelect">
+        <el-menu theme="dark" :default-active="activeIndex" class="el-menu-demo nav-head" mode="horizontal" router="true" @select="handleSelect">
           <div class="logo"></div>
-          <el-menu-item index="1"><router-link to="/yunyinshuju">运营数据</router-link></el-menu-item>
-          <el-menu-item index="2">运营支撑</el-menu-item>
+          <el-menu-item index="/yunyinshuju">运营数据</el-menu-item>
+          <el-menu-item index="/operationSupport">运营支撑</el-menu-item>
           <el-menu-item index="3">订单日志</el-menu-item>
           <el-menu-item index="4">系统管理</el-menu-item>
           <el-col :span="4" class="userinfo">
@@ -19,41 +19,19 @@
           </el-col>
         </el-menu>
         <!-- 左侧的导航栏 -->
-        <div class="left_active">
+        <!-- <div class="left_active">
             <el-menu default-active="1-1"  class="el-menu-vertical-demo " @open="handleOpen" @close="handleClose" >
-                <el-submenu index="1" >
-                    <template slot="title"><i class="el-icon-message"></i>综合概况</template>
-                    <el-menu-item-group>
-                        <router-link to="/hello"><el-menu-item index="1-1">首页</el-menu-item></router-link>
-                        <router-link to="/dataSynthesis"><el-menu-item index="1-2">图形数据</el-menu-item></router-link>
-                        <router-link to="/user"><el-menu-item index="1-3">用户</el-menu-item></router-link>
-                        <router-link to="/401"><el-menu-item index="1-4">用户3</el-menu-item></router-link>
-                    </el-menu-item-group>
-                </el-submenu>
+                <template >
+                    <el-submenu index="1" >
+                        <template slot="title"><i class="el-icon-message"></i>{{OperationData.name}}</template>
+                        <el-menu-item-group v-for="item in OperationData.children">
+                            <router-link :to="item.path"><el-menu-item index="1-1">{{item.name}}</el-menu-item></router-link>
+                        </el-menu-item-group>
+                    </el-submenu>
+                </template>
             </el-menu>
-        </div>
-        <!-- <div class="">
-            <template v-for="item in routes">
-                <router-link v-if="!item.hidden&&item.noDropdown&&item.children.length>0" :to="item.path+'/'+item.children[0].path">
-                    <el-menu-item :index="item.path+'/'+item.children[0].path">
-                        <wscn-icon-svg v-if='item.icon' :icon-class="item.icon" /> {{item.children[0].name}}
-                    </el-menu-item>
-                </router-link>
-                <el-submenu :index="item.name" v-if="!item.noDropdown&&!item.hidden">
-                    <template slot="title">
-                        <wscn-icon-svg v-if='item.icon' :icon-class="item.icon" /> {{item.name}}
-                    </template>
-                    <template v-for="child in item.children" v-if='!child.hidden'>
-                        <sidebar-item class='menu-indent' v-if='child.children&&child.children.length>0' :routes='[child]'> </sidebar-item>
-                        <router-link v-else class="menu-indent" :to="item.path+'/'+child.path">
-                            <el-menu-item :index="item.path+'/'+child.path">
-                                {{child.name}}
-                            </el-menu-item>
-                        </router-link>
-                    </template>
-                </el-submenu>
-            </template>
         </div> -->
+
         <el-col :span="24" class="content-wrapper">
             <transition name="fade" mode="out-in" >
                 <router-view  class="nav-view">
@@ -74,14 +52,14 @@ export default {
         activeIndex2: '1',
         sysUserName: '',
         sysUserAvatar: 'http://imgtu.5011.net/uploads/content/20170410/2880121491810236.jpg',
-        routes:"",
+        // routes:"",
       };
     },
-    mounted:function(){
-        this.$nextTick(function(){
-            this.routes = store.getters.addRouters
-        })
-    },
+    // mounted:function(){
+    //     this.$nextTick(function(){
+    //         this.routes = store.getters.addRouters
+    //     })
+    // },
     methods: {
         handleSelect(key, keyPath) {
             console.log(key, keyPath);
@@ -96,8 +74,6 @@ export default {
             }).catch(() => {
 
             });
-
-
         },
         handleOpen(key, keyPath) {
             console.log(key, keyPath);
@@ -146,7 +122,7 @@ export default {
     min-width: 1080px;
     min-height: 660px;
 }
-.left_active {
+/*.left_active {
     width: 15%;
     min-width: 150px;
     height: 100% ;
@@ -164,5 +140,5 @@ export default {
     height: 100%;
 
     float: left;
-}
+}*/
 </style>

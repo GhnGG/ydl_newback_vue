@@ -72,7 +72,7 @@ export default {
         sessionStorage.setItem('user', JSON.stringify(loginParams));
         console.log(loginParams);
         this.$router.push({
-          path: '/home'
+          path: '/hello'
         });
     },
     ...mapActions([
