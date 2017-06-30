@@ -8,8 +8,8 @@
     <el-input type="password" v-model="ruleForm2.checkPass" auto-complete="off" placeholder="密码"></el-input>
   </el-form-item>
   <el-checkbox v-model="checked" checked class="remember">记住密码</el-checkbox>
-  <el-form-item style="width:100%;"><input type="button" name="" value="添加路由" @click="increment">
-    <el-button type="primary" style="width:100%;" @click.native.prevent="handleSubmit2" :loading="logining">登录</el-button>
+
+    <el-button type="primary" style="width:100%;" @click.native.prevent="handleSubmit2" :loading="logining" >登录</el-button>
     <!--<el-button @click.native.prevent="handleReset2">重置</el-button>-->
   </el-form-item>
 </el-form>
@@ -17,9 +17,9 @@
 
 <script>
 import { mapActions } from 'vuex'
-import {
-  allget
-} from '../api/api'
+import { allget } from '../api/api'
+import store from '../vuex/store';
+import router from '../router';
 //import NProgress from 'nprogress'
 export default {
   data() {
@@ -59,16 +59,25 @@ export default {
             username: this.ruleForm2.account,
             password: this.ruleForm2.checkPass
         };
-        // let url = '/loginTpl/login'
-        // allget(loginParams, url).then(data => {
-        //     this.logining = true;
-        //     console.log(data);
-        //     // sessionStorage.setItem('user', JSON.stringify(loginParams));
-        //     // console.log(loginParams);
-        //     // this.$router.push({
-        //     //   path: '/hello'
-        //     // });
-        // });
+        try {
+            if (store.getters.roles.length === 0) { // 判断当前用户是否已拉取完user信息
+                store.dispatch('GetInfo').then(res => { // 拉取user
+                  const roles = ['develop'];
+                  console.log(roles);
+                  store.dispatch('GenerateRoutes', { roles }).then(() => { // 生成可访问的路由表
+                    router.addRoutes(store.getters.addRouters) // 动态添加可访问路由表
+                    // next(to.path); // hack方法 确保addRoutes已完成
+                  })
+                }).catch(err => {
+                //   console.log(err);
+                });
+              }
+        } catch (e) {
+            console.log(e);
+        } finally {
+
+        }
+
         sessionStorage.setItem('user', JSON.stringify(loginParams));
         console.log(loginParams);
         this.$router.push({
@@ -76,8 +85,7 @@ export default {
         });
     },
     ...mapActions([
-      'increment', // 映射 this.increment() 为 this.$store.dispatch('increment')
-      'decrement'
+      'GetInfo', // 映射 this.increment() 为 this.$store.dispatch('increment')
     ])
   }
 }
