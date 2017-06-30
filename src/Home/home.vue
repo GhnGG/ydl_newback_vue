@@ -1,13 +1,13 @@
 <template lang="html">
     <el-row class="container">
         <!-- 头部的导航栏 -->
-        <el-menu theme="dark" :default-active="activeIndex" class="el-menu-demo nav-head" mode="horizontal" router="true" @select="handleSelect">
+        <el-menu theme="dark" :default-active="activeIndex" class="el-menu-demo nav-head" mode="horizontal" router @select="handleSelect">
 
           <div class="logo"></div>
-          <el-menu-item index="/yunyinshuju">运营数据</el-menu-item>
-          <el-menu-item index="/operationSupport">运营支撑</el-menu-item>
-          <el-menu-item index="3">订单日志</el-menu-item>
-          <el-menu-item index="4">系统管理</el-menu-item>
+          <el-menu-item index="operationData">运营数据</el-menu-item>
+          <el-menu-item index="operationSupport">运营支撑</el-menu-item>
+          <el-menu-item index="anchorManager">主播管理</el-menu-item>
+          <el-menu-item index="systemManagement">系统管理</el-menu-item>
           <el-col :span="4" class="userinfo">
               <el-dropdown trigger="hover">
                   <span class="el-dropdown-link userinfo-inner"><img :src="sysUserAvatar" /> {{sysUserName}}</span>

@@ -2,7 +2,7 @@
     <el-row>
         <!-- 左侧的导航栏 -->
         <div class="left_active">
-            <el-menu default-active="1-1"  class="el-menu-vertical-demo " @open="handleOpen" @close="handleClose" >
+            <el-menu  class="el-menu-vertical-demo " @open="handleOpen" @close="handleClose" >
                 <el-submenu index="1">
                     <template slot="title"><i class="el-icon-message"></i>综合概况</template>
                     <el-menu-item-group>

@@ -39,8 +39,8 @@ router.beforeEach((to, from, next) => {
     // next(to.path)
     next({ path: '/login' })
   } else {
-    if (store.getters.roles.length === 0) { // 判断当前用户是否已拉取完user_info信息
-        store.dispatch('GetInfo').then(res => { // 拉取user_info
+    if (store.getters.roles.length === 0) { // 判断当前用户是否已拉取完user信息
+        store.dispatch('GetInfo').then(res => { // 拉取user
           const roles = ['develop'];
           console.log(roles);
           store.dispatch('GenerateRoutes', { roles }).then(() => { // 生成可访问的路由表
@@ -51,13 +51,12 @@ router.beforeEach((to, from, next) => {
         //   console.log(err);
         });
       } else {
-        // 没有动态改变权限的需求可直接next() 删除下方权限判断 ↓
+        // 权限判断
         if (hasPermission(store.getters.roles, to.meta.role)) {
           next();//
         } else {
           next({ path: '/401', query: { noGoBack: true } });
         }
-        // 可删 ↑
         // next()
       }
   }
