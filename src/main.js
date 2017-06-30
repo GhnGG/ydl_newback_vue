@@ -26,13 +26,26 @@ router.beforeEach((to, from, next) => {
     // next(to.path)
     next({ path: '/login' })
   } else {
+
         // 权限判断
-        if (hasPermission(store.getters.roles, to.meta.role)) {
-          next();//
-        } else {
-          next({ path: '/401', query: { noGoBack: true } });
+        // if (hasPermission(store.getters.roles, to.meta.role)) {
+        //   next();//
+        // } else {
+        //   next({ path: '/401', query: { noGoBack: true } });
+        // }
+        console.log(store.getters.permission_routers);
+        if(store.getters.permission_routers==undefined){
+            this.$router.push({ path: '/login' });
+        }else {
+
+            // 权限判断
+            if (hasPermission(store.getters.roles, to.meta.role)) {
+              next();//
+            } else {
+              next({ path: '/401', query: { noGoBack: true } });
+            }
         }
-        // next()
+
   }
 })
 

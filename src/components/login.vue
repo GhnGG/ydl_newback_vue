@@ -16,7 +16,6 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex'
 import { allget } from '../api/api'
 import store from '../vuex/store';
 import router from '../router';
@@ -59,34 +58,23 @@ export default {
             username: this.ruleForm2.account,
             password: this.ruleForm2.checkPass
         };
-        try {
-            if (store.getters.roles.length === 0) { // 判断当前用户是否已拉取完user信息
-                store.dispatch('GetInfo').then(res => { // 拉取user
-                  const roles = ['develop'];
-                  console.log(roles);
-                  store.dispatch('GenerateRoutes', { roles }).then(() => { // 生成可访问的路由表
-                    router.addRoutes(store.getters.addRouters) // 动态添加可访问路由表
-                    // next(to.path); // hack方法 确保addRoutes已完成
-                  })
-                }).catch(err => {
-                //   console.log(err);
-                });
-              }
-        } catch (e) {
-            console.log(e);
-        } finally {
-
-        }
+        if (store.getters.roles.length === 0) { // 判断当前用户是否已拉取完user信息
+            store.dispatch('GetInfo').then(res => { // 拉取user
+              const roles = ['develop'];
+              console.log(roles);
+              store.dispatch('GenerateRoutes', { roles }).then(() => { // 生成可访问的路由表
+                router.addRoutes(store.getters.addRouters) // 动态添加可访问路由表
+                // next(to.path); // hack方法 确保addRoutes已完成
+              })
+            }).catch(err => {
+                // console.log(err);
+            });
+          }
 
         sessionStorage.setItem('user', JSON.stringify(loginParams));
         console.log(loginParams);
-        this.$router.push({
-          path: '/hello'
-        });
+        this.$router.push({ path: '/hello' });
     },
-    ...mapActions([
-      'GetInfo', // 映射 this.increment() 为 this.$store.dispatch('increment')
-    ])
   }
 }
 </script>

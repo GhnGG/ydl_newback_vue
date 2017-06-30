@@ -33,7 +33,7 @@
             </el-menu>
         </div> -->
 
-        <el-col :span="24" class="content-wrapper">
+        <el-col :span="24" class="content-all-wrapper">
             <transition name="fade" mode="out-in" >
                 <router-view  class="nav-view">
 
@@ -57,11 +57,11 @@ export default {
         // routes:"",
       };
     },
-    // mounted:function(){
-    //     this.$nextTick(function(){
-    //         this.routes = store.getters.addRouters
-    //     })
-    // },
+    mounted:function(){
+        this.$nextTick(function(){
+            console.log(document.body.clientHeight);
+        })
+    },
     computed: {
         ...mapGetters([
           'permission_routers'
@@ -119,6 +119,7 @@ export default {
     margin:15px 10px 0 50px;
 }
 .nav-view {
+    /*height: 100%;*/
     width: 100%;
     min-width: 1080px;
 }
@@ -129,12 +130,26 @@ export default {
     min-width: 1080px;
     min-height: 660px;
 }
-/*.left_active {
+@media screen and (min-height: 660px) {
+    .left_active {
+        width: 15%;
+        min-width: 150px;
+        min-height: 660px;
+        height: 100% ;
+        background-color: #eef1f6;
+        float: left;
+    }
+}
+.left_active {
     width: 15%;
     min-width: 150px;
+    min-height: 660px;
     height: 100% ;
-    background-color: #aab1a7;
+    background-color: #eef1f6;
     float: left;
+}
+.content-all-wrapper {
+    height: 100%;
 }
 .content-container {
     display: inline-block;
@@ -147,5 +162,5 @@ export default {
     height: 100%;
 
     float: left;
-}*/
+}
 </style>

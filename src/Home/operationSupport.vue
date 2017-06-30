@@ -72,23 +72,5 @@ export default {
 </script>
 
 <style lang="css">
-.left_active {
-    width: 15%;
-    min-width: 150px;
-    height: 100% ;
-    background-color: #aab1a7;
-    float: left;
-}
-.content-container {
-    display: inline-block;
-    overflow-y: scroll;
-    padding: 20px;
-}
-.content-wrapper {
-    width: 85% !important;
-    min-width: 600px;
-    height: 100%;
 
-    float: left;
-}
 </style>
