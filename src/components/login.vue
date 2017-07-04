@@ -69,7 +69,7 @@ export default {
             }).catch(err => {
                 // console.log(err);
             });
-          }
+        }
 
         sessionStorage.setItem('user', JSON.stringify(loginParams));
         console.log(loginParams);

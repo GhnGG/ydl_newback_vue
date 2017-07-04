@@ -132,7 +132,7 @@ export default {
 }
 @media screen and (min-height: 660px) {
     .left_active {
-        width: 15%;
+        width: 13%;
         min-width: 150px;
         min-height: 660px;
         height: 100% ;
@@ -141,15 +141,17 @@ export default {
     }
 }
 .left_active {
-    width: 15%;
+    width: 13%;
     min-width: 150px;
-    min-height: 660px;
+    min-height: 850px;
     height: 100% ;
-    background-color: #eef1f6;
+    background-color: #324157;
     float: left;
 }
 .content-all-wrapper {
+    /*margin-top: 2px;*/
     height: 100%;
+    min-width: 1200px;
 }
 .content-container {
     display: inline-block;
@@ -157,8 +159,7 @@ export default {
     padding: 20px;
 }
 .content-wrapper {
-    width: 85% !important;
-    min-width: 600px;
+    width: 87% !important;
     height: 100%;
 
     float: left;

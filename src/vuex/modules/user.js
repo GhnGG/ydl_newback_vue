@@ -8,6 +8,7 @@ const user = {
     router:[],
     au_channelname: '',
     channelid: '',
+    token:"",
   },
 
   mutations: {
@@ -18,7 +19,10 @@ const user = {
         state.roles = roles;
     },
     SET_ROUTER:(state,router) => {
-        state.router = router
+        state.router = router;
+    },
+    SET_TOKEN:(state,token) => {
+        state.token = token;
     }
   },
 
@@ -29,16 +33,16 @@ const user = {
         // commit('SET_ROLES', ['editor']);
         // commit('SET_NAME', '超级管理员');
         // commit('SET_ROUTER', 'data');
-
       return new Promise((resolve,reject) => {
           let url = '/loginTpl/login'
           try {
               allget({userid:'ghn',userpwd:'e10adc3949ba59abbe56e057f20f883e'}, url).then(data => {
                 console.log(data);
                 console.log('获取用户信息');
-                commit('SET_ROLES', ['editor']);
+                commit('SET_ROLES', ['admin']);
                 commit('SET_NAME', '超级管理员');
                 commit('SET_ROUTER', data.data.data);
+                commit('SET_TOKEN','1248jsug1245875');
                 resolve();
               });
           } catch (e) {
@@ -46,13 +50,14 @@ const user = {
           } finally {
 
           }
-
-
       }).catch(e => {
           reject(e)
       })
     },
-
+    // 证明
+    GetInfoId({commit ,state}){
+        commit('SET_TOKEN','1248jsug1245875');
+    },
     // 登出
     LogOut({ commit, state }) {
       return new Promise((resolve, reject) => {

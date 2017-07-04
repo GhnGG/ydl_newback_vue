@@ -2,13 +2,14 @@
     <el-row>
         <!-- 左侧的导航栏 -->
         <div class="left_active">
-            <el-menu  class="el-menu-vertical-demo " @open="handleOpen" @close="handleClose" >
+            <el-menu  class="el-menu-vertical-demo " @open="handleOpen" @close="handleClose" theme="dark">
                 <el-submenu index="1">
-                    <template slot="title"><i class="el-icon-message"></i>综合概况</template>
+                    <template slot="title"><i class="el-icon-message"></i>基础数据</template>
                     <el-menu-item-group>
-                        <router-link to="/dataSynthesis"><el-menu-item index="1-1">图形数据</el-menu-item></router-link>
-                        <!-- <router-link to="/user"><el-menu-item index="1-3">用户</el-menu-item></router-link> -->
-                        <!-- <el-menu-item index="1-2"><router-link to="/user">用户</router-link></el-menu-item> -->
+                        <router-link to="/channelDataManagement"><el-menu-item index="1-1">总渠道基础数据</el-menu-item></router-link>
+                        <router-link to="/dataSynthesis"><el-menu-item index="1-2">图形数据</el-menu-item></router-link>
+
+
                     </el-menu-item-group>
                 </el-submenu>
                 <el-submenu index="2">

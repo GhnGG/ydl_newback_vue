@@ -1,7 +1,14 @@
 <template lang="html">
     <el-row>
-        <div class="hello-nav">欢迎回来----<span>{{nsernmae | name}}</span></div>
-        <div class="time-nav el-icon-time" >{{time}} <span>{{week}}</span></div>
+        <div class="welcome">
+            <div class="welcome-left">
+                <div class="hello-nav">欢迎回来----<span>{{nsernmae | name}}</span></div>
+                <div class="time-nav el-icon-time" >{{time}} <span>{{week}}</span></div>
+            </div>
+        </div>
+        <div class="">
+
+        </div>
     </el-row>
 </template>
 
@@ -61,19 +68,28 @@ export default {
 
 <style lang="css">
     .hello-nav {
-        width: 500px;
-        height: 80px;
+
         color: #000;
         font-size: 40px;
-        margin: 20% auto 0;
+
     }
     .time-nav{
-        width: 500px;
-        height: 80px;
+
         color: #000;
         font-size: 40px;
-        margin: 0 auto 0;
+        margin: 20px auto 0;
         display: block !important;
         color: #8492a6;
+    }
+    .welcome {
+        height: 120px;
+        margin: 10% 0 0 10%;
+    }
+    .welcome-left {
+        width: 500px;
+    }
+    .welcome-right {
+        width: 200px;
+        
     }
 </style>

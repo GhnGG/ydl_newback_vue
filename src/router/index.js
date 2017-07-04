@@ -16,8 +16,8 @@ import User from '../User/user.vue';
 // 页面的基本架构
 import Hello from '../Home/hello.vue';
 import Err401 from '../error/401.vue';
-
-
+// 基础数据
+import channelDataManagement from '../basicData/channelDataManagement'
 // 把router 引用进入vue
 Vue.use(VueRouter);
 // 基本的路由配置
@@ -60,6 +60,7 @@ export const asyncRouterMap = [
                 children: [
 
                     { path: '/dataSynthesis', component: graphic, name: '综合数据', hidden: false ,meta: { role: ['admin'] }},
+                    { path: '/channelDataManagement', component: channelDataManagement, name: '基础数据', hidden: false ,meta: { role: ['admin'] }},
                     // { path: '/401', component: Err401, name: '401' },
                 ]
             },
