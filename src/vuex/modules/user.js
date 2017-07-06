@@ -6,8 +6,8 @@ const user = {
     status: '',
     roles: [],
     router:[],
-    au_channelname: '',
-    channelid: '',
+    channelid:'',
+    channelname: '',
     token:"",
   },
 
@@ -23,6 +23,12 @@ const user = {
     },
     SET_TOKEN:(state,token) => {
         state.token = token;
+    },
+    SET_CHANNELID:(state,channelid) => {
+        state.channelid = channelid;
+    },
+    SET_CHANNELNAME:(state,channelname) => {
+        state.channelname = channelname;
     }
   },
 
@@ -37,11 +43,13 @@ const user = {
           let url = '/loginTpl/login'
           try {
               allget({userid:'ghn',userpwd:'e10adc3949ba59abbe56e057f20f883e'}, url).then(data => {
-                console.log(data);
-                console.log('获取用户信息');
+                // console.log(data);
+                // console.log('获取用户信息');
                 commit('SET_ROLES', ['admin']);
                 commit('SET_NAME', '超级管理员');
                 commit('SET_ROUTER', data.data.data);
+                commit('SET_CHANNELID',data.data.channelid);
+                commit('SET_CHANNELNAME',data.data.au_channelname);
                 commit('SET_TOKEN','1248jsug1245875');
                 resolve();
               });

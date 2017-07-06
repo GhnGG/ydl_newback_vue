@@ -61,7 +61,7 @@ export default {
         if (store.getters.roles.length === 0) { // 判断当前用户是否已拉取完user信息
             store.dispatch('GetInfo').then(res => { // 拉取user
               const roles = ['develop'];
-              console.log(roles);
+            //   console.log(roles);
               store.dispatch('GenerateRoutes', { roles }).then(() => { // 生成可访问的路由表
                 router.addRoutes(store.getters.addRouters) // 动态添加可访问路由表
                 // next(to.path); // hack方法 确保addRoutes已完成
@@ -72,7 +72,7 @@ export default {
         }
 
         sessionStorage.setItem('user', JSON.stringify(loginParams));
-        console.log(loginParams);
+        // console.log(loginParams);
         this.$router.push({ path: '/hello' });
     },
   }

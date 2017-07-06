@@ -17,7 +17,8 @@ import User from '../User/user.vue';
 import Hello from '../Home/hello.vue';
 import Err401 from '../error/401.vue';
 // 基础数据
-import channelDataManagement from '../basicData/channelDataManagement'
+import channelDataManagement from '../basicData/channelDataManagement' //总渠道基础数据
+import subChannel from '../basicData/subChannel' //分渠道数据
 // 把router 引用进入vue
 Vue.use(VueRouter);
 // 基本的路由配置
@@ -58,9 +59,9 @@ export const asyncRouterMap = [
                 name: '主页',
                 hidden: false ,
                 children: [
-
                     { path: '/dataSynthesis', component: graphic, name: '综合数据', hidden: false ,meta: { role: ['admin'] }},
                     { path: '/channelDataManagement', component: channelDataManagement, name: '基础数据', hidden: false ,meta: { role: ['admin'] }},
+                    { path: '/subChannel', component: subChannel, name: '分渠道数据', hidden: false ,meta: { role: ['admin'] }},
                     // { path: '/401', component: Err401, name: '401' },
                 ]
             },

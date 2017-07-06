@@ -14,34 +14,28 @@
                       </el-date-picker>
                     </div>
 				</el-form-item>
-                <el-select v-model="value" placeholder="请选择">
-                   <el-option
-                     v-for="item in options"
-                     :key="item.value"
-                     :label="item.label"
-                     :value="item.value">
-                   </el-option>
-                 </el-select>
+                <el-select v-model="value" filterable placeholder="请选择">
+                  <el-option
+                    v-for="item in options"
+                    :key="item.value"
+                    :label="item.label"
+                    :value="item.value">
+                  </el-option>
+                </el-select>
 				<el-form-item>
 					<el-button type="primary" v-on:click="getUser">查询</el-button>
 					<el-button type="primary" v-on:click="handleDownload">导出</el-button>
 				</el-form-item>
 			</el-form>
 		</el-col>
-		<!-- 图形 -->
-		<el-col :span="24" style="overflow-x:hidden">
-			<div id="chartLine" style="width:100%; height:400px;"></div>
-		</el-col>
 		<!--列表-->
 		<template>
-			<el-table :data="pageTw" border fit highlight-current-row v-loading="listLoading" @selection-change="selsChange" style="width: 100%;" max-height="350" >
+			<el-table :data="pageTw" border fit highlight-current-row v-loading="listLoading" @selection-change="selsChange" style="width: 100%;" max-height="760" >
 				<el-table-column type="index" width="70" >
 				</el-table-column>
 				<el-table-column prop="time" label="日期" width="120" sortable >
 				</el-table-column>
-				<el-table-column prop="people" label="总人数" width="100" sortable>
-				</el-table-column>
-				<el-table-column prop="active" label="日活跃" width="100" sortable>
+				<el-table-column prop="channel_id" label="渠道" width="100" sortable>
 				</el-table-column>
 				<el-table-column prop="device" label="新增设备数" width="130" sortable>
 				</el-table-column>
@@ -49,15 +43,9 @@
 				</el-table-column>
                 <el-table-column prop="rate" label="转化率" min-width="120" sortable>
 				</el-table-column>
-                <el-table-column prop="act" label="活跃度" min-width="100" sortable>
+                <el-table-column prop="num" label="平均启动次数" min-width="100" sortable>
 				</el-table-column>
-                <el-table-column prop="ACCU" :formatter="time" label="平均使用时长" min-width="150" sortable>
-				</el-table-column>
-                <el-table-column prop="old_active" label="老活跃用户" min-width="140" sortable>
-				</el-table-column>
-                <el-table-column prop="old_rate" label="老用户占比" min-width="140" sortable>
-				</el-table-column>
-                <el-table-column prop="man_woman_rate" :formatter="rate" label="男女占比" min-width="120" sortable>
+                <el-table-column prop="ACCU" :formatter="time" label="平均在线时长" min-width="150" sortable>
 				</el-table-column>
 			</el-table>
 			<!--工具条-->
@@ -71,7 +59,7 @@
 </template>
 <script>
 import { allget } from '../api/api';
-import echarts from 'echarts';
+import store from '../vuex/store';
 	export default {
 		data() {
 			return {
@@ -86,30 +74,10 @@ import echarts from 'echarts';
 				page: 2,
 				listLoading: false,
                 time_value:[new Date()-7*24*60*60*1000,new Date()],
-                options:[
-                    {
-                        value: '0',
-                        label: '全部'
-                    },
-                    {
-                        value: '1',
-                        label: '苹果'
-                    },{
-                        value: '2',
-                        label: '安卓'
-                    },{
-                        value: '666',
-                        label: '苹果-广告'
-                    }
-                ],
-                value:"0",
+                options:[],
+                value:"",
 				sels: [],//列表选中列
-				alltime:[],
-				dayactive:[],
-				newdevice:[],
-				newregister:[],
-				ajaxrate:[],
-				ajaxact:[],
+
 			}
 		},
 		computed:{
@@ -144,17 +112,17 @@ import echarts from 'echarts';
 			getUser() {
                 let _this = this ;
                 this.listLoading = true;
-				_this.alltime=[];
-				_this.dayactive=[];
-				_this.newdevice=[];
-				_this.newregister=[];
-				_this.ajaxrate=[];
-				_this.ajaxact=[];
-                let url = '/Base/getBaseData';
+                let value ;
+                if(this.value==''){
+                    value = store.getters.channelid;
+                }else {
+                    value = this.value;
+                }
+                let url = '/Base/getBaseDataByChannel';
                 let data ={
                     date_s:this.YMDdata(this.time_value[0]),
                     date_e:this.YMDdata(this.time_value[1]),
-                    channel:this.value
+                    channel:value
                 }
                 allget(data, url).then(data => {
                     // console.log(data);
@@ -162,19 +130,11 @@ import echarts from 'echarts';
 					_this.totalpage = data.data.data.length;
                     _this.users = data.data.data;
 					let ajaxData = data.data.data;
-					ajaxData.forEach(function(val,index){
-						_this.alltime.unshift(ajaxData[index].time);
-						_this.dayactive.unshift(ajaxData[index].active);
-						_this.newdevice.unshift(ajaxData[index].device);
-						_this.newregister.unshift(ajaxData[index].register);
-						_this.ajaxrate.unshift(ajaxData[index].rate);
-						_this.ajaxact.unshift(ajaxData[index].act);
-					});
-					this.canvas();
+
+
                 }).catch(function(err){
 					console.log(err);
 				});
-
                 this.listLoading = false;
 			},
 			// 第二种导出方式
@@ -197,6 +157,18 @@ import echarts from 'echarts';
   	            }
   	          }))
 		    },
+            // 渠道数组
+            arrychannel:function(){
+                let _this = this;
+                let channelid = store.getters.channelid.split(',');
+                let channelname = store.getters.channelname.split(',');
+                channelid.forEach(function(val,index){
+                    _this.options.push({
+                        value:channelid[index],
+                        label:channelname[index]
+                    })
+                })
+            },
 			// 时间
 			time:function(row, column){
 				let dd = parseInt(row.ACCU / 60 / 60 / 24);
@@ -294,6 +266,7 @@ import echarts from 'echarts';
 		mounted() {
             this.$nextTick(function(){
 				this.getUser();
+                this.arrychannel();
             })
 		}
 	};

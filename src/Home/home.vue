@@ -59,7 +59,7 @@ export default {
     },
     mounted:function(){
         this.$nextTick(function(){
-            console.log(document.body.clientHeight);
+
         })
     },
     computed: {
@@ -114,7 +114,7 @@ export default {
     float: left;
     width: 58px;
     height: 28px;
-    background-image: url(../assets/dianliao-logo.png) ;
+    background-image: url(http://dianliaotools.oss-cn-shenzhen.aliyuncs.com/common/dianliao-logo.png) ;
     background-size: cover;
     margin:15px 10px 0 50px;
 }
@@ -143,7 +143,7 @@ export default {
 .left_active {
     width: 13%;
     min-width: 150px;
-    min-height: 850px;
+    min-height: 920px;
     height: 100% ;
     background-color: #324157;
     float: left;
