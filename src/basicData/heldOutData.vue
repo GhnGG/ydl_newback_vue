@@ -14,13 +14,21 @@
                       </el-date-picker>
                     </div>
 				</el-form-item>
-                <el-select v-model="value" filterable placeholder="请选择">
+                <el-select v-model="value" filterable placeholder="请选择" @change="isshow">
                   <el-option
                     v-for="item in options"
                     :key="item.value"
                     :label="item.label"
                     :value="item.value">
                   </el-option>
+                </el-select>
+                <el-select v-model="sex" placeholder="请选择" :disabled="show">
+                   <el-option
+                     v-for="item in sexDate"
+                     :key="item.value"
+                     :label="item.label"
+                     :value="item.value">
+                   </el-option>
                 </el-select>
 				<el-form-item>
 					<el-button type="primary" v-on:click="getUser">查询</el-button>
@@ -33,19 +41,19 @@
 			<el-table :data="pageTw" border fit highlight-current-row v-loading="listLoading" @selection-change="selsChange" style="width: 100%;" max-height="760" >
 				<el-table-column type="index" width="70" >
 				</el-table-column>
-				<el-table-column prop="time" label="日期" width="120" sortable >
+				<el-table-column prop="date" label="日期" width="120" sortable >
 				</el-table-column>
-				<el-table-column prop="channel_id" label="渠道" width="100" sortable>
+				<el-table-column prop="regPlayer" label="注册数" width="100" sortable>
 				</el-table-column>
-				<el-table-column prop="device" label="新增设备数" width="130" sortable>
+				<el-table-column prop="rate" :formatter="rate" label="次留" width="130" sortable>
 				</el-table-column>
-				<el-table-column prop="register" label="新增注册数" min-width="180" sortable>
+				<el-table-column prop="rate2" :formatter="rate2" label="2日留" min-width="180" sortable>
 				</el-table-column>
-                <el-table-column prop="rate" label="转化率" min-width="120" sortable>
+                <el-table-column prop="rate3" :formatter="rate3" label="3日留" min-width="120" sortable>
 				</el-table-column>
-                <el-table-column prop="num" label="平均启动次数" min-width="100" sortable>
+                <el-table-column prop="rate15" :formatter="rate15" label="15日留" min-width="100" sortable>
 				</el-table-column>
-                <el-table-column prop="ACCU" :formatter="time" label="平均在线时长" min-width="150" sortable>
+                <el-table-column prop="rate30" :formatter="rate30" label="30日留" min-width="150" sortable>
 				</el-table-column>
 			</el-table>
 			<!--工具条-->
@@ -66,6 +74,7 @@ import store from '../vuex/store';
 				filters: {
 					name: ''
 				},
+                show:false,
 				star:"0",
 				end:'20',
 			    users:[],
@@ -75,7 +84,22 @@ import store from '../vuex/store';
 				listLoading: false,
                 time_value:[new Date()-7*24*60*60*1000,new Date()],
                 options:[],
+                sexDate:[
+                    {
+                        value: '0',
+                        label: '全部'
+                    },
+                    {
+                        value: '1',
+                        label: '男'
+                    },
+                    {
+                        value: '2',
+                        label: '女'
+                    }
+                ],
                 value:"",
+                sex:"0",
 				sels: [],//列表选中列
 
 			}
@@ -86,6 +110,15 @@ import store from '../vuex/store';
 			}
 		},
 		methods: {
+            //改变性别状态
+            isshow:function(){
+                if(this.value!=''){
+                    this.show = true;
+                    this.sex = '0';
+                }else {
+                    this.show = false;
+                }
+            },
 			//性别显示转换
 			formatSex: function (row, column) {
 				return row.sex == 1 ? '男' : row.sex == 0 ? '女' : '未知';
@@ -118,11 +151,22 @@ import store from '../vuex/store';
                 }else {
                     value = this.value;
                 }
-                let url = '/Base/getBaseDataByChannel';
+                let url = '/Base/getRetPlayer';
                 let data ={
                     date_s:this.YMDdata(this.time_value[0]),
                     date_e:this.YMDdata(this.time_value[1]),
-                    channel:value
+                }
+                if(this.value!=''){
+                    data.channel = this.value;
+                    data.sex = undefined;
+                }else {
+                    data.channel = undefined;
+                }
+                if(this.sex!=0){
+                    data.sex = this.sex;
+                    data.channel = undefined;
+                }else {
+                    data.sex = undefined;
                 }
                 allget(data, url).then(data => {
                     // console.log(data);
@@ -141,10 +185,10 @@ import store from '../vuex/store';
 			handleDownload() {
 	          	require.ensure([], () => {
   	            const { export_json_to_excel } = require('../vendor/Export2Excel');
-  	            const tHeader = ['日期','渠道','新增设备数','新增注册数','转化率','平均启动次数','平均在线时长'];
-  	            const filterVal = ['time','channel_id','device','register','rate','num','ACCU'];
+  	            const tHeader = ['日期','注册数','次留','2日留','3日留','7日留','15日留','30日留'];
+  	            const filterVal = ['date','regPlayer','rate','rate2','rate3','rate7','rate15','rate30'];
   	            const data = this.formatJson(filterVal, this.users);
-  	            export_json_to_excel(tHeader, data, '分渠道数据');
+  	            export_json_to_excel(tHeader, data, '留存数据');
   	          })
 	        },
 			// 导出的一部分
@@ -162,7 +206,7 @@ import store from '../vuex/store';
                 let _this = this;
                 let channelid = store.getters.channelid.split(',');
                 let channelname = store.getters.channelname.split(',');
-				_this.options.push({
+                _this.options.push({
                     value:'',
                     label:'全部'
                 })
@@ -173,18 +217,24 @@ import store from '../vuex/store';
                     })
                 })
             },
-			// 时间
-			time:function(row, column){
-				let dd = parseInt(row.ACCU / 60 / 60 / 24);
-				let hh = parseInt(row.ACCU / 60 / 60 % 24);
-				let mi = parseInt(row.ACCU / 60 % 60);
-				let ss = parseInt(row.ACCU % 60);
-				return dd + '天' + hh + '时' + mi + '分' + ss + '秒';
-			},
 			// 过滤器
 			rate:function(row, column){
-				let rate = '1'+':'+row.man_woman_rate
-				return rate
+                return (row.rate*100).toFixed(2)+"%";
+			},
+            rate2:function(row, column){
+                return (row.rate2*100).toFixed(2)+"%";
+			},
+            rate3:function(row, column){
+                return (row.rate3*100).toFixed(2)+"%";
+			},
+            rate7:function(row, column){
+                return (row.rate7*100).toFixed(2)+"%";
+			},
+            rate15:function(row, column){
+                return (row.rate15*100).toFixed(2)+"%";
+			},
+            rate30:function(row, column){
+                return (row.rate30*100).toFixed(2)+"%";
 			},
 			selsChange: function (sels) {
 				this.sels = sels;
@@ -202,5 +252,5 @@ import store from '../vuex/store';
 </script>
 
 <style scoped>
-
+    .hide {display: none !important;}
 </style>

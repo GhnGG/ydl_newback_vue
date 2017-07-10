@@ -9,10 +9,8 @@
                         <el-menu-item index="channelDataManagement">总渠道基础数据</el-menu-item>
                         <el-menu-item index="dataSynthesis">图形数据</el-menu-item>
                         <el-menu-item index="subChannel">分渠道数据</el-menu-item>
-                        <!-- <router-link to="/channelDataManagement"><el-menu-item index="1-1">总渠道基础数据</el-menu-item></router-link>
-                        <router-link to="/dataSynthesis"><el-menu-item index="1-2">图形数据</el-menu-item></router-link>
-                        <router-link to="/subChannel"><el-menu-item index="1-3">图形数据</el-menu-item></router-link> -->
-
+                        <el-menu-item index="heldOutData">留存数据</el-menu-item>
+                        <el-menu-item index="liveOnlineDetails">实时在线详情</el-menu-item>
                     </el-menu-item-group>
                 </el-submenu>
                 <el-submenu index="2">
