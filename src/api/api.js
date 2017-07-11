@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-let base = '';
+let base = 'http://manage.dianliaoapp.com/ydlManage/server/index.php';
 
 export const requestLogin = params => { return axios.post(`${base}/login`, params).then(res => res.data); };
 
@@ -12,4 +12,4 @@ export const editUser = params => { return axios.get(`${base}/user/edit`, { para
 
 export const addUser = params => { return axios.get(`${base}/user/add`, { params: params }); };
 
-export const allget = (params,url) => {return axios.get(`${base}`+url, { params: params });}
+export const allget = (params,url) => {return axios.get(`${base}`+url, { params: params });};

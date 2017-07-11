@@ -87,7 +87,7 @@ import store from '../vuex/store';
                 sexDate:[
                     {
                         value: '0',
-                        label: '全部'
+                        label: '选择性别'
                     },
                     {
                         value: '1',
@@ -208,7 +208,7 @@ import store from '../vuex/store';
                 let channelname = store.getters.channelname.split(',');
                 _this.options.push({
                     value:'',
-                    label:'全部'
+                    label:'选择或者输入渠道'
                 })
                 channelid.forEach(function(val,index){
                     _this.options.push({

@@ -34,7 +34,7 @@
         </div> -->
 
         <el-col :span="24" class="content-all-wrapper">
-            <transition name="fade" mode="out-in" >
+            <transition name="el-fade-in-linear" mode="out-in" >
                 <router-view  class="nav-view">
 
                 </router-view>
@@ -77,6 +77,7 @@ export default {
                 //type: 'warning'
             }).then(() => {
                 sessionStorage.removeItem('user');
+                //这个不能动
                 location.reload();
             }).catch(() => {
 
@@ -143,7 +144,7 @@ export default {
 .left_active {
     width: 13%;
     min-width: 150px;
-    min-height: 940px;
+    min-height: 920px;
     height: 100% ;
     background-color: #324157;
     float: left;

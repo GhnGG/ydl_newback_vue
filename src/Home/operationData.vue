@@ -11,6 +11,7 @@
                         <el-menu-item index="subChannel">分渠道数据</el-menu-item>
                         <el-menu-item index="heldOutData">留存数据</el-menu-item>
                         <el-menu-item index="liveOnlineDetails">实时在线详情</el-menu-item>
+                        <el-menu-item index="realTimeMatching">实时匹配详情</el-menu-item>
                     </el-menu-item-group>
                 </el-submenu>
                 <el-submenu index="2">

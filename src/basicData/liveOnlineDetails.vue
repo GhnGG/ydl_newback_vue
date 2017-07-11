@@ -14,14 +14,17 @@
                       </el-date-picker>
                     </div>
 				</el-form-item>
-                <el-select v-model="sex" placeholder="请选择">
-                   <el-option
-                     v-for="item in options"
-                     :key="item.value"
-                     :label="item.label"
-                     :value="item.value">
-                   </el-option>
-                 </el-select>
+
+					<span class="demonstration">性别</span>
+	                <el-select v-model="sex" placeholder="请选择">
+	                   <el-option
+	                     v-for="item in options"
+	                     :key="item.value"
+	                     :label="item.label"
+	                     :value="item.value">
+	                   </el-option>
+	                 </el-select>
+				</div>
 				<el-form-item>
 					<el-button type="primary" v-on:click="getUser">查询</el-button>
 					<el-button type="primary" v-on:click="handleDownload">导出</el-button>
@@ -115,10 +118,10 @@ import echarts from 'echarts';
 				totalpage:null,
 				page: 2,
 				listLoading: false,
-                time_value:[new Date()-7*24*60*60*1000,new Date()],
+                time_value:[new Date()-3*24*60*60*1000,new Date()],
                 options:[
                     {
-                        value: '0',
+                        value: '',
                         label: '全部'
                     },
                     {
@@ -129,7 +132,7 @@ import echarts from 'echarts';
                         label: '女'
                     }
                 ],
-                sex:"0",
+                sex:"",
                 obj:[],
 				sels: [],//列表选中列
 				alltime:[],
@@ -178,7 +181,7 @@ import echarts from 'echarts';
                 let data ={
                     date_s:this.YMDdata(this.time_value[0]),
                     date_e:this.YMDdata(this.time_value[1]),
-                    sex:this.value
+                    sex:this.sex
                 }
                 allget(data, url).then(data => {
                     // console.log(data);
