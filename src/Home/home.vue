@@ -105,7 +105,7 @@ export default {
     float: right;
 }
 .logo {
-    display: inline-block;
+    display: block;
     float: left;
     width: 58px;
     height: 28px;
