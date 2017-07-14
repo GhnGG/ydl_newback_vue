@@ -69,7 +69,7 @@ export default {
 <style lang="css">
     .hello-nav {
 
-        color: #000;
+        color: #fff;
         font-size: 40px;
 
     }
@@ -83,7 +83,7 @@ export default {
     }
     .welcome {
         height: 120px;
-        margin: 10% 0 0 10%;
+        margin: 12% 0 0 10%;
     }
     .welcome-left {
         width: 500px;

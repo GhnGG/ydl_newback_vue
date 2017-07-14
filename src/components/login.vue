@@ -10,6 +10,7 @@
     <el-checkbox v-model="checked" checked class="remember">记住密码</el-checkbox>
 
     <el-button type="primary" style="width:100%;" @click.native.prevent="handleSubmit2" :loading="logining">登录</el-button>
+    
     <!--<el-button @click.native.prevent="handleReset2">重置</el-button>-->
 </el-form>
 </template>
@@ -20,7 +21,7 @@ import {
 } from '../api/api'
 import store from '../vuex/store';
 import router from '../router';
-//import NProgress from 'nprogress'
+
 export default {
     data() {
         return {
@@ -48,6 +49,7 @@ export default {
             checked: true
         };
     },
+    
     methods: {
         //   handleReset2() {
         //     this.$refs.ruleForm2.resetFields();
@@ -87,17 +89,22 @@ export default {
 <style lang="css" scoped>
   .login-container {
     /*box-shadow: 0 0px 8px 0 rgba(0, 0, 0, 0.06), 0 1px 0px 0 rgba(0, 0, 0, 0.02);*/
+    /* position: absolute;
+    top: 40%;
+    left: 45%;
+    margin-left: -175px; */
     -webkit-border-radius: 5px;
     border-radius: 5px;
     -moz-border-radius: 5px;
     background-clip: padding-box;
-    margin: 180px auto;
+     margin: 180px auto; 
     width: 350px;
     padding: 35px 35px 15px 35px;
     background: #fff;
     border: 1px solid #eaeaea;
     box-shadow: 0 0 25px #cac6c6;
-    .title {
+  }
+  .title {
       margin: 0px auto 40px auto;
       text-align: center;
       color: #505458;
@@ -105,5 +112,4 @@ export default {
     .remember {
       margin: 0px 0px 35px 0px;
     }
-  }
 </style>

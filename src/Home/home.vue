@@ -45,7 +45,6 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex';
 import store from '../vuex/store';
 export default {
      data() {
@@ -61,11 +60,6 @@ export default {
         this.$nextTick(function(){
 
         })
-    },
-    computed: {
-        ...mapGetters([
-          'permission_routers'
-        ])
     },
     methods: {
         handleSelect(key, keyPath) {
@@ -162,7 +156,7 @@ export default {
 .content-wrapper {
     width: 87% !important;
     height: 100%;
-
+    background-color: #fff;
     float: left;
 }
 </style>

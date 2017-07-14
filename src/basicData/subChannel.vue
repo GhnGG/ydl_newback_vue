@@ -164,7 +164,7 @@ import store from '../vuex/store';
                 let channelname = store.getters.channelname.split(',');
 				_this.options.push({
                     value:'',
-                    label:'选择渠道'
+                    label:'可以输入搜索'
                 })
                 channelid.forEach(function(val,index){
                     _this.options.push({
