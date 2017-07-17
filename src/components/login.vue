@@ -55,32 +55,53 @@ export default {
         //     this.$refs.ruleForm2.resetFields();
         //   },
         handleSubmit2(ev) {
-            var _this = this;
+            let _this = this;
             this.logining = true;
-            var loginParams = {
-                username: this.ruleForm2.account,
-                password: this.ruleForm2.checkPass
-            };
-            if (store.getters.roles.length === 0) { // 判断当前用户是否已拉取完user信息
-                store.dispatch('GetInfo').then(res => { // 拉取user
-                    const roles = ['develop'];
-                    //   console.log(roles);
-                    store.dispatch('GenerateRoutes', {
-                        roles
-                    }).then(() => { // 生成可访问的路由表
-                        router.addRoutes(store.getters.addRouters) // 动态添加可访问路由表
-                        // next(to.path); // hack方法 确保addRoutes已完成
-                    })
-                }).catch(err => {
-                    // console.log(err);
-                });
+            this.$refs.ruleForm2.validate(valid => {
+            if (valid) {
+                let loginParams = {
+                        username: this.ruleForm2.account,
+                        password: this.ruleForm2.checkPass
+                    };
+                if (store.getters.roles.length === 0) { // 判断当前用户是否已拉取完user信息
+                    store.dispatch('GetInfo',loginParams).then(res => { // 拉取user
+                    console.log(res);
+                        if(res.data.ret){
+                            const roles = ['develop'];
+                            //   console.log(roles);
+                            store.dispatch('GenerateRoutes', {
+                                roles
+                            }).then(() => { // 生成可访问的路由表
+                                router.addRoutes(store.getters.addRouters) // 动态添加可访问路由表
+                                // next(to.path); // hack方法 确保addRoutes已完成
+                            })
+                            sessionStorage.setItem('user', JSON.stringify(loginParams));
+                            // console.log(loginParams);
+                            this.$router.push({
+                                path: '/hello'
+                            });
+                            this.logining = false;
+                        }else {
+                            this.$notify.error({
+                                title: '错误',
+                                message: res.data.msg,
+                                duration: 1000,
+                                offset: 100
+                            });
+                            this.logining = false;
+                        }
+                    }).catch(err => {
+                        this.logining = false;
+                        // console.log(err);
+                    });
+                }
+            } else {
+                this.logining = false;
+                console.log('error submit!!');
+                return false;
             }
-
-            sessionStorage.setItem('user', JSON.stringify(loginParams));
-            // console.log(loginParams);
-            this.$router.push({
-                path: '/hello'
-            });
+          });
+            
         },
     }
 }

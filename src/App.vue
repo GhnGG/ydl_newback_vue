@@ -1,32 +1,34 @@
+
 <template>
+<!--注释的大部分的domn  或者是script 都是关于动画的  之所以注释掉是因为只是为了 好玩才放上去 并没有什么实际意义  -->
 	<div id="app" >
-		<canvas id="canvas" class="canvas"></canvas>
+		<!-- <canvas id="canvas" class="canvas"></canvas> -->
 		<transition name="fade"
 		            mode="out-in">
 			<router-view></router-view>
 		</transition>
-		<div class="moon"></div>
+		<!-- <div class="moon"></div> -->
 	</div>
 </template>
 
 <script>
-import 'babel-polyfill';
 
-import Stars from '../static/js/Star'
-import Moon from '../static/js/Moon'
-import Meteor   from '../static/js/Meteor'
+import 'babel-polyfill';
+// import Stars from '../static/js/Star'
+// import Moon from '../static/js/Moon'
+// import Meteor   from '../static/js/Meteor'
 export default {
 	name: 'app',
 	components: {
 	},
 	mounted(){
 		this.$nextTick(function(){
-			if (document.addEventListener) {
-			let resizeEvt = 'orientationchange' in window ? 'orientationchange' : 'resize';
-			window.addEventListener(resizeEvt, this.canvas, false);
-			document.addEventListener('DOMContentLoaded', this.canvas, false);
-			this.canvas();
-			} 
+			// if (document.addEventListener) {
+			// let resizeEvt = 'orientationchange' in window ? 'orientationchange' : 'resize';
+			// window.addEventListener(resizeEvt, this.canvas, false);
+			// document.addEventListener('DOMContentLoaded', this.canvas, false);
+			// this.canvas();
+			// } 
 		});
 	},
 	methods:{
@@ -44,36 +46,36 @@ export default {
 		    canvas.width = width;
 		    canvas.height = height;
 
-		const meteorGenerator = ()=> {
-		    //x位置偏移，以免经过月亮
-		    let x = Math.random() * width + 800
-		    meteors.push(new Meteor(ctx, x, height))
+			const meteorGenerator = ()=> {
+				//x位置偏移，以免经过月亮
+				let x = Math.random() * width + 800
+				meteors.push(new Meteor(ctx, x, height))
 
-		    //每隔随机时间，生成新流星
-		    setTimeout(()=> {
-		        meteorGenerator()
+				//每隔随机时间，生成新流星
+				setTimeout(()=> {
+					meteorGenerator()
 
-		    }, Math.random() * 2000)
-		}
+				}, Math.random() * 2000)
+			}
 
-		const frame = ()=>{
-		    count++
-		    count % 10 == 0 && stars.blink()
-		    moon.draw()
-		    stars.draw()
+			const frame = ()=>{
+				count++
+				count % 10 == 0 && stars.blink()
+				moon.draw()
+				stars.draw()
 
-		    meteors.forEach((meteor, index, arr)=> {
-		        //如果流星离开视野之内，销毁流星实例，回收内存
-		        if (meteor.flow()) {
-		            meteor.draw()
-		        } else {
-		            arr.splice(index, 1)
-		        }
-		    })
-		    requestAnimationFrame(frame)
-		}
-		meteorGenerator()
-		frame()
+				meteors.forEach((meteor, index, arr)=> {
+					//如果流星离开视野之内，销毁流星实例，回收内存
+					if (meteor.flow()) {
+						meteor.draw()
+					} else {
+						arr.splice(index, 1)
+					}
+				})
+				requestAnimationFrame(frame)
+			}
+			meteorGenerator()
+			frame()
 		}
 	}
 }

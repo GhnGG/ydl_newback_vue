@@ -35,23 +35,29 @@ const user = {
   actions: {
 
     // 获取用户信息
-    GetInfo({ commit, state }) {
+    GetInfo({ commit },ueserInfo) {
         // commit('SET_ROLES', ['editor']);
         // commit('SET_NAME', '超级管理员');
         // commit('SET_ROUTER', 'data');
       return new Promise((resolve,reject) => {
           let url = '/loginTpl/login'
           try {
-              allget({userid:'ghn',userpwd:'e10adc3949ba59abbe56e057f20f883e'}, url).then(data => {
+              allget({userid:ueserInfo.username,userpwd:ueserInfo.password}, url).then(data => {
                 // console.log(data);
                 // console.log('获取用户信息');
-                commit('SET_ROLES', ['admin']);
-                commit('SET_NAME', '超级管理员');
-                commit('SET_ROUTER', data.data.data);
-                commit('SET_CHANNELID',data.data.channelid);
-                commit('SET_CHANNELNAME',data.data.au_channelname);
-                commit('SET_TOKEN','1248jsug1245875');
-                resolve();
+                if(data.data.ret){
+                  commit('SET_ROLES', ['admin']);
+                  commit('SET_NAME', '超级管理员');
+                  commit('SET_ROUTER', data.data.data);
+                  commit('SET_CHANNELID',data.data.channelid);
+                  commit('SET_CHANNELNAME',data.data.au_channelname);
+                  commit('SET_TOKEN','1248jsug1245875');
+                  resolve();
+                }else {
+                  
+                  resolve(data);  
+                }
+                
               });
           } catch (e) {
              console.log(e);
