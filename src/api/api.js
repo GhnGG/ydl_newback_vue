@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-let base = 'http://manage.dianliaoapp.com/ydlManage/server/index.php';
+let base = '';
 
 export const requestLogin = params => { return axios.post(`${base}/login`, params).then(res => res.data); };
 
