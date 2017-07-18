@@ -52,7 +52,7 @@ const user = {
                   commit('SET_CHANNELID',data.data.channelid);
                   commit('SET_CHANNELNAME',data.data.au_channelname);
                   commit('SET_TOKEN','1248jsug1245875');
-                  resolve();
+                  resolve(data);
                 }else {
                   
                   resolve(data);  
