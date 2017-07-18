@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-let base = 'http://manage.dianliaoapp.com/ydlManage/server/index.php';
+let base = '请填写自己的后台地址';
 
 export const requestLogin = params => { return axios.post(`${base}/login`, params).then(res => res.data); };
 
