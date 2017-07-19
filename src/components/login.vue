@@ -27,7 +27,7 @@ export default {
         return {
             logining: false,
             ruleForm2: {
-                account: 'admin',
+                account: 'ghn',
                 checkPass: '123456'
             },
             rules2: {
@@ -67,7 +67,7 @@ export default {
                     store.dispatch('GetInfo',loginParams).then(res => { // 拉取user
                     console.log(res);
                         if(res.data.ret){
-                            const roles = ['develop'];
+                            const roles = ['deleve'];
                             //   console.log(roles);
                             store.dispatch('GenerateRoutes', {
                                 roles

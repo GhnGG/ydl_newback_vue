@@ -59,11 +59,11 @@ export const asyncRouterMap = [
             {
                 path: '/operationData',
                 component: operationData,
-                name: '主页',
+                name: '基础数据',
                 hidden: false ,
                 children: [
                     { path: '/dataSynthesis', component: graphic, name: '综合数据', hidden: false ,meta: { role: ['admin'] }},
-                    { path: '/channelDataManagement', component: channelDataManagement, name: '基础数据', hidden: false ,meta: { role: ['admin'] }},
+                    { path: '/channelDataManagement', component: channelDataManagement, name: '总渠道基础数据', hidden: false ,meta: { role: ['admin'] }},
                     { path: '/subChannel', component: subChannel, name: '分渠道数据', hidden: false ,meta: { role: ['admin'] }},
                     { path: '/heldOutData', component: heldOutData, name: '留存数据', hidden: false ,meta: { role: ['admin'] }},
                     { path: '/liveOnlineDetails', component: liveOnlineDetails, name: '实时在线详情', hidden: false ,meta: { role: ['admin'] }},

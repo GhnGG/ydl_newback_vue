@@ -7,6 +7,8 @@ function hasPermission(roles, route) {
   if (route.meta && route.meta.role) {
     return roles.some(role => route.meta.role.indexOf(role) >= 0)
 
+  } else if(route.path=='*') {
+    return false
   } else {
     return true
   }
@@ -33,12 +35,12 @@ const permission = {
             const { roles } = data;
             console.log(roles);
             const accessedRouters = asyncRouterMap.filter(v => {
-                // console.log(v);
+                console.log(v);
                 if (roles.indexOf('admin') >= 0) return true;
                 if (hasPermission(roles, v)) {
                     // console.log(v.children);
-                    if (v.children && v.children.length > 0) {
-                        v.children = v.children.filter(child => {
+                    if (v.children[0].children && v.children[0].children.length > 0) {
+                        v.children[0].children = v.children[0].children.filter(child => {
                             if (hasPermission(roles, child)) {
                               return child
                             //   console.log(child);
