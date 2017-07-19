@@ -35,7 +35,7 @@ const permission = {
             const { roles } = data;
             console.log(roles);
             const accessedRouters = asyncRouterMap.filter(v => {
-                console.log(v);
+                // console.log(v);
                 if (roles.indexOf('admin') >= 0) return true;
                 if (hasPermission(roles, v)) {
                     // console.log(v.children);

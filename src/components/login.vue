@@ -67,7 +67,7 @@ export default {
                     store.dispatch('GetInfo',loginParams).then(res => { // 拉取user
                     console.log(res);
                         if(res.data.ret){
-                            const roles = ['deleve'];
+                            const roles = ['admin'];
                             //   console.log(roles);
                             store.dispatch('GenerateRoutes', {
                                 roles

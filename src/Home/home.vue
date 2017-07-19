@@ -71,6 +71,9 @@ export default {
                 //type: 'warning'
             }).then(() => {
                 sessionStorage.removeItem('user');
+                this.$router.push({
+                                path: '/login'
+                            });
                 //这个不能动
                 location.reload();
             }).catch(() => {
