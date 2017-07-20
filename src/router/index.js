@@ -13,6 +13,7 @@ import Login from '../components/login.vue';
 import graphic from '../graphic/dataSynthesis.vue';
 // 运营支撑的
 import User from '../User/user.vue';
+import userQuery from '../User/userQuery.vue'
 // 页面的基本架构
 import Hello from '../Home/hello.vue';
 import Err401 from '../error/401.vue';
@@ -84,10 +85,11 @@ export const asyncRouterMap = [
                 path: '/operationSupport',
                 component: operationSupport,
                 name: '运营支撑主页',
+                iconCls: 'el-icon-menu',
                 hidden: false ,
                 children: [
-                    { path: '/user', component: User, name: '用户', hidden: false },
-
+                    { path: '/user', component: User, name: '用户', hidden: false ,meta:{role:['admin'] }},
+                    { path: '/userQuery', component: userQuery, name: '用户查询', hidden: false,meta:{role:['admin'] } },    
                 ]
             },
         ],

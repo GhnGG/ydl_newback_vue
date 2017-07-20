@@ -5,7 +5,18 @@
 			<el-form :inline="true" :model="filters">
 				<el-form-item>
 					<div class="block">
-                      <span class="demonstration">时间</span>
+                      <span class="registerTime">注册时间</span>
+                      <el-date-picker
+                        v-model="time_value"
+                        type="daterange"
+                        range-separator=" - "
+                        placeholder="选择日期范围">
+                      </el-date-picker>
+                    </div>
+				</el-form-item>
+				<el-form-item>
+					<div class="block">
+                      <span class="landTime">登录时间</span>
                       <el-date-picker
                         v-model="time_value"
                         type="daterange"
@@ -27,10 +38,6 @@
 					<el-button type="primary" v-on:click="handleDownload">导出</el-button>
 				</el-form-item>
 			</el-form>
-		</el-col>
-		<!-- 图形 -->
-		<el-col :span="24" style="overflow-x:hidden">
-			<div id="chartLine" style="width:100%; height:400px;"></div>
 		</el-col>
 		<!--列表-->
 		<template>
@@ -71,7 +78,6 @@
 </template>
 <script>
 import { allget } from '../api/api';
-import echarts from 'echarts';
 	export default {
 		data() {
 			return {
@@ -104,12 +110,6 @@ import echarts from 'echarts';
                 ],
                 value:"0",
 				sels: [],//列表选中列
-				alltime:[],
-				dayactive:[],
-				newdevice:[],
-				newregister:[],
-				ajaxrate:[],
-				ajaxact:[],
 			}
 		},
 		computed:{
@@ -144,12 +144,6 @@ import echarts from 'echarts';
 			getUser() {
                 let _this = this ;
                 this.listLoading = true;
-				_this.alltime=[];
-				_this.dayactive=[];
-				_this.newdevice=[];
-				_this.newregister=[];
-				_this.ajaxrate=[];
-				_this.ajaxact=[];
                 let url = '/Base/getBaseData';
                 let data ={
                     date_s:this.YMDdata(this.time_value[0]),
@@ -161,16 +155,7 @@ import echarts from 'echarts';
                     // console.log('获取用户信息');
 					_this.totalpage = data.data.data.length;
                     _this.users = data.data.data;
-					let ajaxData = data.data.data;
-					ajaxData.forEach(function(val,index){
-						_this.alltime.unshift(ajaxData[index].time);
-						_this.dayactive.unshift(ajaxData[index].active);
-						_this.newdevice.unshift(ajaxData[index].device);
-						_this.newregister.unshift(ajaxData[index].register);
-						_this.ajaxrate.unshift(ajaxData[index].rate);
-						_this.ajaxact.unshift(ajaxData[index].act);
-					});
-					this.canvas();
+					
                 }).catch(function(err){
 					console.log(err);
 				});
@@ -213,83 +198,6 @@ import echarts from 'echarts';
 			selsChange: function (sels) {
 				this.sels = sels;
 			},
-			// 图表绘制 已写死可以不死
-			canvas:function(){
-				this.chartLine = echarts.init(document.getElementById('chartLine'));
-				this.chartLine.setOption({
-	                title: {
-	                    text: '总渠道数据管理'
-	                },
-	                tooltip: {
-	                    trigger: 'axis'
-	                },
-	                legend: {
-	                    data: ['日活', '新增设备', '新增注册','转化率','活跃度']
-	                },
-					toolbox: {
-				        show : true,
-				        feature : {
-				            mark : {show: false},
-				            dataView : {show: false, readOnly: false},
-				            magicType : {show: false, type: ['line', 'bar']},
-				            restore : {show: false},
-				            saveAsImage : {show: false}
-				        }
-				    },
-	                containLabel: true,
-	                xAxis: {
-	                    type: 'category',
-	                    data: this.alltime
-	                },
-	                yAxis: [
-	                     {
-				            type : 'value',
-				            name : '量',
-				            axisLabel : {
-				                formatter: '{value} .'
-				            }
-				        },
-				        {
-				            type : 'value',
-				            name : '百分比',
-				            axisLabel : {
-				                formatter: '{value} %'
-				            }
-				        }
-	                ],
-	                series: [
-	                    {
-	                        name: '日活',
-	                        type: 'bar',
-	                        data: this.dayactive
-	                    },
-	                    {
-	                        name: '新增设备',
-	                        type: 'bar',
-	                        data: this.newdevice
-	                    },
-	                    {
-	                        name: '新增注册',
-	                        type: 'bar',
-	                        data: this.newregister
-	                    },
-						{
-	                        name: '转化率',
-	                        type: 'line',
-							yAxisIndex: 1,
-							smooth:true,
-	                        data: this.ajaxrate
-	                    },
-						{
-	                        name: '活跃度',
-	                        type: 'line',
-							yAxisIndex: 1,
-							smooth:true,
-	                        data: this.ajaxact
-	                    },
-	                ]
-	            });
-			}
 		},
 		mounted() {
             this.$nextTick(function(){
@@ -300,6 +208,6 @@ import echarts from 'echarts';
 
 </script>
 
-<style scoped>
+<style >
 
 </style>

@@ -2,43 +2,18 @@
     <el-row>
         <!-- 左侧的导航栏 -->
         <div class="left_active">
-            <el-menu  class="el-menu-vertical-demo " @open="handleOpen" @close="handleClose" theme="dark">
-                <el-submenu index="1">
-                    <template slot="title"><i class="el-icon-message"></i>综合概况</template>
-                    <el-menu-item-group>
-                        <!-- <router-link to="/hello"><el-menu-item index="1-1">首页</el-menu-item></router-link>
-                        <router-link to="/dataSynthesis"><el-menu-item index="1-2">图形数据</el-menu-item></router-link> -->
-                        <router-link to="/user"><el-menu-item index="1-3">用户</el-menu-item></router-link>
-                        <!-- <el-menu-item index="1-2"><router-link to="/user">用户</router-link></el-menu-item> -->
-                        <!-- <router-link to="/401"><el-menu-item index="1-4">用户3</el-menu-item></router-link> -->
-                    </el-menu-item-group>
-                </el-submenu>
-                <el-submenu index="2">
-                    <template slot="title"><i class="el-icon-message"></i>激活与注册</template>
-                    <el-menu-item-group>
-                        <el-menu-item index="2-1">激活数据</el-menu-item>
-                        <el-menu-item index="2-2">注册数据</el-menu-item>
-                        <el-menu-item index="2-3">转化率</el-menu-item>
-                    </el-menu-item-group>
-                </el-submenu>
-                <el-submenu index="3">
-                    <template slot="title"><i class="el-icon-message"></i>留存与流失</template>
-                    <el-menu-item-group>
-                        <el-menu-item index="3-1">激活数据</el-menu-item>
-                        <el-menu-item index="3-2">注册数据</el-menu-item>
-                        <el-menu-item index="3-3">转化率</el-menu-item>
-                    </el-menu-item-group>
-                </el-submenu>
-                <el-submenu index="4">
-                    <template slot="title"><i class="el-icon-message"></i>活跃与在线</template>
-                    <el-menu-item-group>
-                        <el-menu-item index="4-1">激活数据</el-menu-item>
-                        <el-menu-item index="4-2">注册数据</el-menu-item>
-                        <el-menu-item index="4-3">转化率</el-menu-item>
-                    </el-menu-item-group>
-                </el-submenu>
-
-
+            <el-menu  class="el-menu-vertical-demo " @open="handleOpen" @close="handleClose" theme="dark" router>
+                <div v-for="(item,indexs) in dataView">
+                    <el-submenu :index="indexs+''">
+                        <template slot="title"><i :class="item.iconCls"></i>{{item.name}}</template>
+                        <template v-for="child in item.children ">
+                            <el-menu-item-group >
+                                <el-menu-item :index="child.path">{{child.name}}</el-menu-item>
+                                <!-- <el-menu-item index="userQuery">用户查询</el-menu-item>     -->
+                            </el-menu-item-group>
+                        </template>
+                    </el-submenu>
+                </div>
             </el-menu>
         </div>
         <el-col :span="24" class="content-wrapper">
@@ -50,14 +25,26 @@
 </template>
 
 <script>
+import store from '../vuex/store';
 export default {
   data() {
     return {
       activeIndex: '1',
       activeIndex2: '1',
       sysUserName: '',
-      sysUserAvatar: 'http://imgtu.5011.net/uploads/content/20170410/2880121491810236.jpg',
+      
     };
+  },
+  computed:{
+    dataView(){
+       let thatDdta = store.getters.addRouters;
+       let data =  thatDdta.filter(data => {
+           if(data.name=='运营支撑'){
+               return  data
+           }
+       }) 
+       return data[0].children
+    }
   },
   methods: {
 
