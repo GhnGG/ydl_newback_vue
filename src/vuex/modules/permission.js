@@ -29,7 +29,7 @@ const permission = {
 
   actions: {
     GenerateRoutes({ commit }, data) {
-        // console.log(data);
+        console.log(data);
         return new Promise(resolve => {
             console.log(data);
             const { roles } = data;

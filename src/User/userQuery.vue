@@ -7,7 +7,7 @@
 					<div class="block">
                       <span class="registerTime">注册时间</span>
                       <el-date-picker
-                        v-model="time_value"
+                        v-model="time_register"
                         type="daterange"
                         range-separator=" - "
                         placeholder="选择日期范围">
@@ -18,21 +18,31 @@
 					<div class="block">
                       <span class="landTime">登录时间</span>
                       <el-date-picker
-                        v-model="time_value"
+                        v-model="time_land"
                         type="daterange"
                         range-separator=" - "
                         placeholder="选择日期范围">
                       </el-date-picker>
                     </div>
 				</el-form-item>
-                <el-select v-model="value" placeholder="请选择">
-                   <el-option
-                     v-for="item in options"
-                     :key="item.value"
-                     :label="item.label"
-                     :value="item.value">
-                   </el-option>
-                 </el-select>
+				<el-form-item>	
+					<el-select v-model="value" filterable placeholder="请选择">
+						<el-option
+							v-for="item in options"
+							:key="item.value"
+							:label="item.label"
+							:value="item.value">
+						</el-option>
+					</el-select>
+				</el-form-item>
+				<el-form-item>
+					<el-input
+						placeholder="请输入UID"
+						icon="search"
+						v-model="uid"
+						:on-icon-click="getUser">
+					</el-input>
+				</el-form-item>
 				<el-form-item>
 					<el-button type="primary" v-on:click="getUser">查询</el-button>
 					<el-button type="primary" v-on:click="handleDownload">导出</el-button>
@@ -78,6 +88,7 @@
 </template>
 <script>
 import { allget } from '../api/api';
+import store from '../vuex/store';
 	export default {
 		data() {
 			return {
@@ -91,24 +102,11 @@ import { allget } from '../api/api';
 				totalpage:null,
 				page: 2,
 				listLoading: false,
-                time_value:[new Date()-7*24*60*60*1000,new Date()],
-                options:[
-                    {
-                        value: '0',
-                        label: '渠道'
-                    },
-                    {
-                        value: '1',
-                        label: '苹果'
-                    },{
-                        value: '2',
-                        label: '安卓'
-                    },{
-                        value: '666',
-                        label: '苹果-广告'
-                    }
-                ],
-                value:"0",
+                time_register:[new Date()-180*24*60*60*1000,new Date()],
+				time_land:[new Date()-180*24*60*60*1000,new Date()],
+                options:[],
+                value:"",
+				uid:null,
 				sels: [],//列表选中列
 			}
 		},
@@ -146,8 +144,8 @@ import { allget } from '../api/api';
                 this.listLoading = true;
                 let url = '/Base/getBaseData';
                 let data ={
-                    date_s:this.YMDdata(this.time_value[0]),
-                    date_e:this.YMDdata(this.time_value[1]),
+                    date_s:this.YMDdata(this.time_register[0]),
+                    date_e:this.YMDdata(this.time_register[1]),
                     channel:this.value
                 }
                 allget(data, url).then(data => {
@@ -162,6 +160,22 @@ import { allget } from '../api/api';
 
                 this.listLoading = false;
 			},
+			// 渠道数组
+            arrychannel(){
+                let _this = this;
+                let channelid = store.getters.channelid.split(',');
+                let channelname = store.getters.channelname.split(',');
+				_this.options.push({
+                    value:'',
+                    label:'可以输入搜索'
+                })
+                channelid.forEach(function(val,index){
+                    _this.options.push({
+                        value:channelid[index],
+                        label:channelname[index]
+                    })
+                })
+            },
 			// 第二种导出方式
 			handleDownload() {
 	          	require.ensure([], () => {
@@ -201,7 +215,8 @@ import { allget } from '../api/api';
 		},
 		mounted() {
             this.$nextTick(function(){
-				this.getUser();
+				// this.getUser();
+				this.arrychannel();
             })
 		}
 	};

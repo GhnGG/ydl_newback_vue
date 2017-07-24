@@ -68,12 +68,13 @@ export default {
                     console.log(res);
                         if(res.data.ret){
                             const roles = ['admin'];
+                            // const ajaxrouter = res.data.data;
                             //   console.log(roles);
                             store.dispatch('GenerateRoutes', {
                                 roles
                             }).then(() => { // 生成可访问的路由表
                                 router.addRoutes(store.getters.addRouters) // 动态添加可访问路由表
-                                // next(to.path); // hack方法 确保addRoutes已完成
+                                
                             })
                             sessionStorage.setItem('user', JSON.stringify(loginParams));
                             // console.log(loginParams);
