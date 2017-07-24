@@ -10,7 +10,7 @@
                         v-model="time_register"
                         type="daterange"
                         range-separator=" - "
-                        placeholder="选择日期范围">
+                        placeholder="选择日期范围">	
                       </el-date-picker>
                     </div>
 				</el-form-item>
@@ -49,32 +49,49 @@
 				</el-form-item>
 			</el-form>
 		</el-col>
+		<!--图片放大的效果  -->
+		<el-col class="big-pic" :span="12" :class="{'hide':ishow}">
+			<img :src="bigpic" alt="" style="width:200px;height:200px;">
+		</el-col>
 		<!--列表-->
 		<template>
-			<el-table :data="pageTw" border fit highlight-current-row v-loading="listLoading" @selection-change="selsChange" style="width: 100%;" max-height="350" >
-				<el-table-column type="index" width="70" >
+			<el-table :data="pageTw" border fit highlight-current-row v-loading="listLoading"  style="width: 100%;" max-height="700" >
+				<el-table-column type="index" width="50" >
 				</el-table-column>
-				<el-table-column prop="time" label="日期" width="120" sortable >
+				<el-table-column prop="addtime" label="注册时间" width="110" sortable >
 				</el-table-column>
-				<el-table-column prop="people" label="总人数" width="100" sortable>
+				<el-table-column prop="channel" label="渠道" width="100" sortable>
 				</el-table-column>
-				<el-table-column prop="active" label="日活跃" width="100" sortable>
+				<el-table-column prop="uid" label="UID" width="100" sortable>
 				</el-table-column>
-				<el-table-column prop="device" label="新增设备数" width="130" sortable>
+				<el-table-column prop="nickname" label="昵称" width="100" sortable>
 				</el-table-column>
-				<el-table-column prop="register" label="新增注册数" min-width="180" sortable>
+				<el-table-column prop="phone" label="手机号" min-width="100" sortable>
 				</el-table-column>
-                <el-table-column prop="rate" label="转化率" min-width="120" sortable>
+                <el-table-column  label="用户头像" min-width="120" sortable >
+					 <template scope="scope">
+						<el-popover trigger="hover" placement="left">
+							<img :src="scope.row.icon" alt="" style="width:300px;height:300px;">
+							<div slot="reference" class="name-wrapper">
+								<img :src="scope.row.icon" alt="" style="width:100px;height:100px;">
+							</div>
+						</el-popover>
+						
+					</template>
 				</el-table-column>
-                <el-table-column prop="act" label="活跃度" min-width="100" sortable>
+                <el-table-column prop="sex" :formatter="sex" label="性别" min-width="50" sortable>
 				</el-table-column>
-                <el-table-column prop="ACCU" :formatter="time" label="平均使用时长" min-width="150" sortable>
+                <el-table-column prop="address" label="城市" min-width="100" sortable>
 				</el-table-column>
-                <el-table-column prop="old_active" label="老活跃用户" min-width="140" sortable>
+                <el-table-column prop="lasttime" label="最近登陆时间" min-width="120" sortable>
 				</el-table-column>
-                <el-table-column prop="old_rate" label="老用户占比" min-width="140" sortable>
+                <el-table-column prop="status" label="状态" min-width="70" sortable>
 				</el-table-column>
-                <el-table-column prop="man_woman_rate" :formatter="rate" label="男女占比" min-width="120" sortable>
+                <el-table-column label="操作" width="150" >
+					<template scope="scope">
+						<el-button size="small" >编辑</el-button>
+						<el-button type="danger" size="small" >删除</el-button>
+					</template>
 				</el-table-column>
 			</el-table>
 			<!--工具条-->
@@ -107,6 +124,8 @@ import store from '../vuex/store';
                 options:[],
                 value:"",
 				uid:null,
+				bigpic:"",
+				ishow:true,
 				sels: [],//列表选中列
 			}
 		},
@@ -142,12 +161,13 @@ import store from '../vuex/store';
 			getUser() {
                 let _this = this ;
                 this.listLoading = true;
-                let url = '/Base/getBaseData';
+				let url = '/User/getUser';
                 let data ={
                     date_s:this.YMDdata(this.time_register[0]),
                     date_e:this.YMDdata(this.time_register[1]),
-                    channel:this.value
                 }
+				this.uid==null||this.uid==""?delete data.uid:data.uid=this.uid;
+				this.value==null||this.value==""?delete data.channel:data.channel=this.value;
                 allget(data, url).then(data => {
                     // console.log(data);
                     // console.log('获取用户信息');
@@ -157,7 +177,7 @@ import store from '../vuex/store';
                 }).catch(function(err){
 					console.log(err);
 				});
-
+				console.log(data);
                 this.listLoading = false;
 			},
 			// 渠道数组
@@ -166,7 +186,7 @@ import store from '../vuex/store';
                 let channelid = store.getters.channelid.split(',');
                 let channelname = store.getters.channelname.split(',');
 				_this.options.push({
-                    value:'',
+                    value:"",
                     label:'可以输入搜索'
                 })
                 channelid.forEach(function(val,index){
@@ -204,13 +224,14 @@ import store from '../vuex/store';
 				let ss = parseInt(row.ACCU % 60);
 				return dd + '天' + hh + '时' + mi + '分' + ss + '秒';
 			},
+			// 性别转换
+			sex(row){
+				return row.sex==1?'男':'女';
+			},
 			// 过滤器
 			rate:function(row, column){
 				let rate = '1'+':'+row.man_woman_rate
 				return rate
-			},
-			selsChange: function (sels) {
-				this.sels = sels;
 			},
 		},
 		mounted() {
@@ -224,5 +245,17 @@ import store from '../vuex/store';
 </script>
 
 <style >
-
+	.big-pic {
+		width: 300px;
+		height: 300px;
+		position: absolute;
+		top: 50%;
+		left: 50%;
+		margin-left: -150px;
+		margin-top: -150px;
+		z-index: 100;
+	}
+	.hide {
+		display: none
+	}
 </style>
