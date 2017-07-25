@@ -2,7 +2,7 @@
     <el-row>
         <!-- 左侧的导航栏 -->
         <div class="left_active">
-            <el-menu  class="el-menu-vertical-demo " @open="handleOpen" @close="handleClose" theme="dark" router>
+            <el-menu  class="el-menu-vertical-demo " @open="handleOpen" @close="handleClose" theme="dark" unique-opened router>
                 <div v-for="(item,indexs) in dataView">
                     <el-submenu :index="indexs+''">
                         <template slot="title"><i :class="item.iconCls"></i>{{item.name}}</template>
@@ -49,10 +49,10 @@ export default {
   methods: {
 
     handleOpen(key, keyPath) {
-      console.log(key, keyPath);
+    //   console.log(key, keyPath);
     },
     handleClose(key, keyPath) {
-      console.log(key, keyPath);
+    //   console.log(key, keyPath);
     }
   }
 }

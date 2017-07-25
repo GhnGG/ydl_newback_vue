@@ -29,11 +29,11 @@ const permission = {
 
   actions: {
     GenerateRoutes({ commit }, data) {
-        console.log(data);
+        // console.log(data);
         return new Promise(resolve => {
-            console.log(data);
+            // console.log(data);
             const { roles } = data;
-            console.log(roles);
+            // console.log(roles);
             const accessedRouters = asyncRouterMap.filter(v => {
                 // console.log(v);
                 if (roles.indexOf('admin') >= 0) return true;

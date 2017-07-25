@@ -65,7 +65,7 @@ export default {
                     };
                 if (store.getters.roles.length === 0) { // 判断当前用户是否已拉取完user信息
                     store.dispatch('GetInfo',loginParams).then(res => { // 拉取user
-                    console.log(res);
+                    // console.log(res);
                         if(res.data.ret){
                             const roles = ['admin'];
                             // const ajaxrouter = res.data.data;

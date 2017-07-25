@@ -49,10 +49,17 @@
 				</el-form-item>
 			</el-form>
 		</el-col>
-		<!--图片放大的效果  -->
-		<el-col class="big-pic" :span="12" :class="{'hide':ishow}">
-			<img :src="bigpic" alt="" style="width:200px;height:200px;">
-		</el-col>
+		<!--用户详情的弹出框  -->
+		<el-dialog title="收货地址" :visible.sync="dialogVisible" size="large">
+			<el-row  v-loading="isgetuser" element-loading-text="拼命加载中" :gutter="20">
+				<el-col :span="12"><div class="grid-content bg-purple"></div></el-col>
+				<el-col :span="12"><div class="grid-content bg-purple"></div></el-col>
+				<el-col :span="12"><div class="grid-content bg-purple"></div></el-col>
+				<el-col :span="12"><div class="grid-content bg-purple"></div></el-col>
+				<el-col :span="12"><div class="grid-content bg-purple"></div></el-col>
+				<el-col :span="12"><div class="grid-content bg-purple"></div></el-col>
+			</el-row>
+		</el-dialog>
 		<!--列表-->
 		<template>
 			<el-table :data="pageTw" border fit highlight-current-row v-loading="listLoading"  style="width: 100%;" max-height="700" >
@@ -81,16 +88,30 @@
 				</el-table-column>
                 <el-table-column prop="sex" :formatter="sex" label="性别" min-width="50" sortable>
 				</el-table-column>
-                <el-table-column prop="address" label="城市" min-width="100" sortable>
+                <el-table-column prop="address" label="城市" min-width="70" sortable>
 				</el-table-column>
                 <el-table-column prop="lasttime" label="最近登陆时间" min-width="120" sortable>
 				</el-table-column>
-                <el-table-column prop="status" label="状态" min-width="70" sortable>
+                <el-table-column prop="status" label="状态" :formatter="status" min-width="70" sortable>
 				</el-table-column>
-                <el-table-column label="操作" width="150" >
-					<template scope="scope">
-						<el-button size="small" >编辑</el-button>
-						<el-button type="danger" size="small" >删除</el-button>
+                <el-table-column label="操作" min-width="200" >
+					<template scope="scope">	
+						<el-row :gutter="20">
+							<el-col :span="12"><el-button type="info" style="marginBottom:10px;" @click="getuserinfo(scope.row.uid)" >用户详情</el-button></el-col>
+							<div v-if="scope.row.status==0">
+								<el-col :span="8"><el-button type="danger" style="marginBottom:10px;" >封号</el-button></el-col>
+							</div>
+							<div v-else-if="scope.row.status==1">
+								<el-col :span="8"><el-button type="danger" style="marginBottom:10px;" >解封</el-button></el-col>
+							</div>
+							<el-col :span="10"><el-button type="warning" style="marginBottom:10px;" >踢下线</el-button></el-col>
+							<div v-if="scope.row.is_up_list==0">
+								<el-col :span="8"><el-button type="warning" style="marginBottom:10px;" >上榜</el-button></el-col>
+							</div>
+							<div v-else-if="scope.row.is_up_list==1">
+								<el-col :span="8"><el-button type="danger" style="marginBottom:10px;" >下榜</el-button></el-col>
+							</div>
+						</el-row>
 					</template>
 				</el-table-column>
 			</el-table>
@@ -114,7 +135,8 @@ import store from '../vuex/store';
 				},
 				star:"0",
 				end:'20',
-			    users:[],
+				users:[],
+				userinfo:[],
 				chartLine: null,
 				totalpage:null,
 				page: 2,
@@ -126,7 +148,8 @@ import store from '../vuex/store';
 				uid:null,
 				bigpic:"",
 				ishow:true,
-				sels: [],//列表选中列
+				dialogVisible: false,
+				isgetuser:false,
 			}
 		},
 		computed:{
@@ -177,8 +200,42 @@ import store from '../vuex/store';
                 }).catch(function(err){
 					console.log(err);
 				});
-				console.log(data);
+				// console.log(data);
                 this.listLoading = false;
+			},
+			//获取单个用户的信息 
+			getuserinfo(uid){
+				let _this =this;
+				console.log(uid);
+				this.isgetuser=true;
+				let url = '/User/getUserInfo';// /User/getUserInfo
+                let data ={
+                    uid:uid
+				}
+                allget(data, url).then(data => {
+					if (data.data.ret) {
+						this.userinfo = data.data.data;
+						this.dialogVisible = true;
+						this.isgetuser=false;
+					} else {
+						this.$notify.error({
+                                title: '错误',
+                                message: res.data.msg,
+                                duration: 1000,
+                                offset: 100
+							}); 
+						this.isgetuser=false;
+					}
+                }).catch(function(err){
+					console.log(err);
+					_this.isgetuser=false;
+					_this.$notify.error({
+						title: '错误',
+						message: '遇到了未知的问题请联系管理员解决',
+						duration: 0
+					});
+				});
+				
 			},
 			// 渠道数组
             arrychannel(){
@@ -228,6 +285,10 @@ import store from '../vuex/store';
 			sex(row){
 				return row.sex==1?'男':'女';
 			},
+			//状态的转换
+			status(row){
+				return row.status==0?'正常':row.status==1?'已提下线':'封号中'
+			},
 			// 过滤器
 			rate:function(row, column){
 				let rate = '1'+':'+row.man_woman_rate
@@ -245,17 +306,12 @@ import store from '../vuex/store';
 </script>
 
 <style >
-	.big-pic {
-		width: 300px;
-		height: 300px;
-		position: absolute;
-		top: 50%;
-		left: 50%;
-		margin-left: -150px;
-		margin-top: -150px;
-		z-index: 100;
-	}
-	.hide {
-		display: none
-	}
+.bg-purple {
+    background: #d3dce6;
+}
+.grid-content {
+    border-radius: 4px;
+    min-height: 36px;
+	margin-bottom: 5px;
+}	
 </style>
