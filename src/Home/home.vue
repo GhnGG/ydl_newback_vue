@@ -141,7 +141,7 @@ export default {
 .left_active {
     width: 13%;
     min-width: 150px;
-    min-height: 920px;
+    min-height: 944px;
     height: 100% ;
     background-color: #324157;
     float: left;
