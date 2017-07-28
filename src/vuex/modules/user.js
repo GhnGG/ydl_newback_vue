@@ -50,7 +50,7 @@ const user = {
             // console.log('获取用户信息');
             if (data.data.ret) {
               commit('SET_ROLES', ['admin']);
-              commit('SET_NAME', '超级管理员');
+              commit('SET_NAME', data.data.username);
               commit('SET_ROUTER', data.data.data);
               commit('SET_CHANNELID', data.data.channelid);
               commit('SET_CHANNELNAME', data.data.au_channelname);

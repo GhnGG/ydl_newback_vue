@@ -51,8 +51,11 @@
 		<!--用户详情的弹出框  -->
 		<el-dialog title="用户详情" :visible.sync="dialogVisible" size="large">
 			<el-row  v-loading="isgetuser" element-loading-text="拼命加载中" :gutter="20">
-				<el-col :span="6" >头像:<div class=" bg-purple"></div>
-				 <img style="width:200px;height:200px;" :src="userinfo.icon" alt=""> 
+				<el-col :span="12">头像<div class="bg-purple" ></div>
+						<div style="width:220px;height:220px;margin:auto">
+							<span class="photo_close" @click="deleteAll(2,userinfo.uid)">x</span>					
+				   			<img style="width:200px;height:200px;" :src="userinfo.icon" alt="" >
+						</div> 
 				</el-col>
 				<el-col :span="6"><div class="grid-content bg-purple">用户uid：{{userinfo.uid}}</div></el-col>
 				<el-col :span="6"><div class="grid-content bg-purple">昵称：{{userinfo.nickname}}</div></el-col>
@@ -66,17 +69,30 @@
 				<el-col :span="6"><div class="grid-content bg-purple">魅力值：{{userinfo.charm_score}}</div></el-col>
 				<el-col :span="6"><div class="grid-content bg-purple">聊票：{{userinfo.volumes}}</div></el-col>
 				<el-col :span="6"><div class="grid-content bg-purple">聊币：{{userinfo.chat_gold}}</div></el-col>
+				<el-col :span="12" style="height:50px">
+					<div class="grid-content " style="height:50px;float:left">
+						<audio :src="userinfo.voice_signature" controls="controls" preload="none"></audio>
+					</div>
+					<el-button type="primary" size="mini" icon="close" v-if="userinfo.voice_signature!=null" @click="deleteAll(3,userinfo.uid)"></el-button>
+				</el-col>	
 				<el-col :span="6"><div class="grid-content bg-purple">累计充值金额：{{userinfo.money}}</div></el-col>
 				<el-col :span="6"><div class="grid-content bg-purple">渠道：{{userinfo.channel}}</div></el-col>
 				<el-col :span="6"><div class="grid-content bg-purple">通话定价：{{userinfo.price}}</div></el-col>
 				<el-col :span="6"><div class="grid-content bg-purple">个性签名：{{userinfo.signature}}</div></el-col>
+				<el-col :span="12" style="height:350px">相册：<div class="grid-content" style="overflow:auto;height:350px">
+					    <el-col :span="6" v-for="(o, index) in allimg" :key="o" style="float:left;margin: 2px 0;">
+							<el-card :body-style="{ padding: '0px' }">
+							<img :src="o" class="image" style="width:110px;height:110px;">
+							<div style="padding: 0px;">															
+								<el-button type="text" class="button" @click="deleteAll(1,userinfo.uid,index)">删除</el-button>
+							</div>
+							</el-card>	
+						</el-col>
+				</div></el-col>
 				<el-col :span="6"><div class="grid-content bg-purple">注册时间：{{userinfo.addtime}}</div></el-col>
 				<el-col :span="6"><div class="grid-content bg-purple">最后登录时间：{{userinfo.lasttime}}</div></el-col>
-				<el-col :span="6" style="height:200px">录音签名<div class="grid-content "><audio :src="userinfo.voice_signature" controls="controls" preload="none"></audio>
-				</div></el-col>
 				<el-col :span="6"><div class="grid-content bg-purple">职业：{{userinfo.occupation}}</div></el-col>
 				<el-col :span="6"><div class="grid-content bg-purple">收到的礼物数：{{userinfo.gift}}</div></el-col>
-				<el-col :span="6"><div class="grid-content bg-purple">相册：{{userinfo.photo_wall}}</div></el-col>
 				<el-col :span="6"><div class="grid-content bg-purple">累积通话时长：{{userinfo.accumulate_time}}</div></el-col>
 				<el-col :span="6"><div class="grid-content bg-purple">随机通话时间：{{userinfo.totalrandtime}}</div></el-col>
 				<el-col :span="6"><div class="grid-content bg-purple">随机通话次数：{{userinfo.totalrandcall}}</div></el-col>
@@ -130,12 +146,12 @@
 						<el-row :gutter="20">
 							<el-col :span="12"><el-button type="info" style="marginBottom:10px;" @click="getuserinfo(scope.row.uid)" >用户详情</el-button></el-col>
 							<div v-if="scope.row.status==0">
-								<el-col :span="8"><el-button type="danger" style="marginBottom:10px;" >封号</el-button></el-col>
+								<el-col :span="8"><el-button type="danger" style="marginBottom:10px;" @click="userOperation(1,scope.row.uid,scope.$index)">封号</el-button></el-col>
 							</div>
 							<div v-else-if="scope.row.status==1">
-								<el-col :span="8"><el-button type="danger" style="marginBottom:10px;" >解封</el-button></el-col>
+								<el-col :span="8"><el-button type="danger" style="marginBottom:10px;" @click="userOperation(2,scope.row.uid,scope.$index)">解封</el-button></el-col>
 							</div>
-							<el-col :span="10"><el-button type="warning" style="marginBottom:10px;" >踢下线</el-button></el-col>
+							<el-col :span="10"><el-button type="warning" style="marginBottom:10px;" @click="userOperation(3,scope.row.uid)">踢下线</el-button></el-col>
 							<div v-if="scope.row.is_up_list==0">
 								<el-col :span="8"><el-button type="warning" style="marginBottom:10px;" >上榜</el-button></el-col>
 							</div>
@@ -179,11 +195,147 @@ import store from '../vuex/store';
 				ishow:true,
 				dialogVisible: false,
 				isgetuser:false,
+				visible2: false,
+			}
+		},
+		computed:{
+			allimg(){
+				return this.userinfo.photo_wall
 			}
 		},
 		methods: {
+			// 删除整合(type ==1 删除图片 type==2删除音频个性签名)
+			deleteAll(type,uid,num){
+				let _this =this,url,data;
+				if (type==1) {
+				    url = '/User/delUserPhotoWall';// 删除图片
+					data ={uid:uid,num:num};
+				} else if(type==2){
+					url = '/User/delUserIcon';// 删除用户头像
+					data ={uid:uid};	
+				} else if(type==3){
+					url = '/User/delUserVoiceSignature';// 删除用户音频
+					data ={uid:uid,voice_signature:''};	
+				}
+				console.log(url);
+				// console.log(type)
+				this.isgetuser=true;
+				this.$confirm('此操作将永久删除该文件, 是否继续?', '提示', {
+					confirmButtonText: '确定',
+					cancelButtonText: '取消',
+					type: 'warning'
+				}).then(() => {
+					console.log(uid,num);
+					allget(data, url).then(data => {
+						if (data.data.ret) {
+							this.userinfo = data.data.data[0];
+							this.dialogVisible = true;
+
+							this.$message({
+								type: 'success',
+								message: '删除成功!'
+							});
+							_this.getuserinfo(uid)
+							this.isgetuser=false;
+						} else {
+							this.$notify.error({
+					                title: '错误',
+					                message: res.data.msg,
+					                duration: 1000,
+					                offset: 100
+								}); 
+							this.isgetuser=false;
+						}
+					}).catch(function(err){
+						console.log(err);
+						_this.isgetuser=false;
+						_this.$notify.error({
+							title: '错误',
+							message: '遇到了未知的问题请联系管理员解决',
+							duration: 0
+						});
+					});
+				}).catch(() => {
+					
+					this.$message({
+						type: 'info',
+						message: '已取消删除'
+					});          
+				});
+				this.isgetuser=false;
+			},
+			//用户操作
+			userOperation(type,uid,index){
+				// console.log(type);
+				let _this =this,url,data;
+				if (type==1) {
+				    url = '/User/kickUser';// 封号
+					data ={uid:uid,operate_user:store.getters.name};
+				} else if(type==2){
+					url = '/User/freeUser';// 解封
+					data ={uid:uid};	
+				} else if(type==3){
+					url = '/User/delUserVoiceSignature';// 踢下线
+					data ={uid:uid,operate_user:store.getters.name};	
+				} else if(type==4) {
+					url = '/User/delUserIcon';// 上榜
+					data ={uid:uid};	
+				} else if(type==5){
+					url = '/User/delUserIcon';// 下榜
+					data ={uid:uid};
+				}
+				this.$prompt('请输入原因', '提示', {
+					confirmButtonText: '确定',
+					cancelButtonText: '取消',
+					inputPattern: /[^x00-xff]/ ,
+					inputErrorMessage: '不能为空,或外文'
+				}).then(({ value }) => {
+					data.reason=value
+					console.log(url,data,index);
+					// 测试使用
+					// type==1?_this.users[index].status="1":type==2?_this.users[index].status="0":_this.users[index].status="3"
+					// allget(data, url).then(data => {
+					// 	if (data.data.ret) {
+					// 		this.userinfo = data.data.data[0];
+					// 		this.dialogVisible = true;
+					// 		this.$message({
+					// 			type: 'success',
+					// 			message: '删除成功!'
+					// 		});
+					// 		_this.getuserinfo(uid)
+					// 		this.isgetuser=false;
+					// 	} else {
+					// 		this.$notify.error({
+					//                 title: '错误',
+					//                 message: res.data.msg,
+					//                 duration: 1000,
+					//                 offset: 100
+					// 			}); 
+					// 		this.isgetuser=false;
+					// 	}
+					// }).catch(function(err){
+					// 	console.log(err);
+					// 	_this.isgetuser=false;
+					// 	_this.$notify.error({
+					// 		title: '错误',
+					// 		message: '遇到了未知的问题请联系管理员解决',
+					// 		duration: 0
+					// 	});
+					// });
+					this.$message({
+						type: 'success',
+						message: '你的邮箱是: ' + value
+					});
+				}).catch((e) => {
+					console.log(e);
+					this.$message({
+						type: 'info',
+						message: '取消输入'
+					});       
+				});
+			},
 			//性别显示转换
-			formatSex: function (row, column) {
+			formatSex(row, column) {
 				return row.sex == 1 ? '男' : row.sex == 0 ? '女' : '未知';
 			},
             //页面的页数
@@ -194,7 +346,7 @@ import store from '../vuex/store';
 				// console.log(val,this.page);
 			},
             // 时间格式化
-            YMDdata:function(data){
+            YMDdata(data){
                 let date = new Date(data);
                 let yy = date.getFullYear();
                 let mm = (date.getMonth() + 1).toString();
@@ -232,7 +384,7 @@ import store from '../vuex/store';
 			//获取单个用户的信息 
 			getuserinfo(uid){
 				let _this =this;
-				console.log(uid);
+				// console.log(uid);
 				this.isgetuser=true;
 				let url = '/User/getUserInfo';// /User/getUserInfo
                 let data ={
@@ -341,5 +493,20 @@ import store from '../vuex/store';
 	margin-bottom: 5px;
 	line-height: 36px;
 	text-align: center;
-}	
+}
+.photo_close {
+	display: block;
+	position: relative;
+	width: 20px;
+	height: 20px;
+	border-radius: 50% !important;
+	background-color: #ff5353;
+	text-align: center;
+	line-height: 20px;
+	color: #fff;
+	right: -3px;
+	top: -7px;
+	cursor: pointer;
+	z-index: 5;
+} 	
 </style>
