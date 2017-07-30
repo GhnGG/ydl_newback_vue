@@ -1,22 +1,20 @@
 
 <template>
-<!--注释的大部分的domn  或者是script 都是关于动画的  之所以注释掉是因为只是为了 好玩才放上去 并没有什么实际意义  -->
+
 	<div id="app" >
-		<!-- <canvas id="canvas" class="canvas"></canvas> -->
+		
 		<transition name="fade"
 		            mode="out-in">
 			<router-view></router-view>
 		</transition>
-		<!-- <div class="moon"></div> -->
+		
 	</div>
 </template>
 
 <script>
 
 import 'babel-polyfill';
-// import Stars from '../static/js/Star'
-// import Moon from '../static/js/Moon'
-// import Meteor   from '../static/js/Meteor'
+
 export default {
 	name: 'app',
 	components: {

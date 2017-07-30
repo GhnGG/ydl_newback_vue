@@ -4,11 +4,13 @@ import App from './App';
 import VueRouter from 'vue-router';
 import router from './router';
 import ElementUI from 'element-ui';
+import vueQuillEditor from 'vue-quill-editor'
 import 'element-ui/lib/theme-default/index.css';
 
 import store from './vuex/store';
 
 Vue.use(ElementUI);
+Vue.use(vueQuillEditor);
 
 
 function hasPermission(roles, permissionRoles) {

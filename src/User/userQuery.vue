@@ -109,7 +109,7 @@
 		</el-dialog>
 		<!--列表-->
 		<template>
-			<el-table :data="users" border fit highlight-current-row v-loading="listLoading"  style="width: 100%;" max-height="790" >
+			<el-table :data="users" border fit highlight-current-row v-loading="listLoading"  style="width: 100%;" max-height="780" >
 				<el-table-column type="index" width="70" >
 				</el-table-column>
 				<el-table-column prop="addtime" label="注册时间" width="110" sortable >
@@ -504,8 +504,8 @@ import store from '../vuex/store';
 	text-align: center;
 	line-height: 20px;
 	color: #fff;
-	right: -3px;
-	top: -7px;
+    right: -190px;
+    top: 7px;
 	cursor: pointer;
 	z-index: 5;
 } 	
