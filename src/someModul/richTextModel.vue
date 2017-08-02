@@ -6,6 +6,9 @@
 </template>
 
 <script>
+import Vue from 'vue';
+import vueQuillEditor from 'vue-quill-editor';
+Vue.use(vueQuillEditor);
 import Quill from 'quill'
 import { ImageImport } from '../someModul/ImageImport.js'
 import { ImageResize } from '../someModul/ImageResize.js'
