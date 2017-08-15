@@ -293,38 +293,37 @@ import store from '../vuex/store';
 					data.reason=value
 					console.log(url,data,index);
 					// 测试使用
-					// type==1?_this.users[index].status="1":type==2?_this.users[index].status="0":_this.users[index].status="3"
-					// allget(data, url).then(data => {
-					// 	if (data.data.ret) {
-					// 		this.userinfo = data.data.data[0];
-					// 		this.dialogVisible = true;
-					// 		this.$message({
-					// 			type: 'success',
-					// 			message: '删除成功!'
-					// 		});
-					// 		_this.getuserinfo(uid)
-					// 		this.isgetuser=false;
-					// 	} else {
-					// 		this.$notify.error({
-					//                 title: '错误',
-					//                 message: res.data.msg,
-					//                 duration: 1000,
-					//                 offset: 100
-					// 			}); 
-					// 		this.isgetuser=false;
-					// 	}
-					// }).catch(function(err){
-					// 	console.log(err);
-					// 	_this.isgetuser=false;
-					// 	_this.$notify.error({
-					// 		title: '错误',
-					// 		message: '遇到了未知的问题请联系管理员解决',
-					// 		duration: 0
-					// 	});
-					// });
+					type==1?_this.users[index].status="1":type==2?_this.users[index].status="0":_this.users[index].status="3"
+					allget(data, url).then(data => {
+						if (data.data.ret) {
+							this.dialogVisible = true;
+							this.$message({
+								type: 'success',
+								message: '删除成功!'
+							});
+							_this.getuserinfo(uid)
+							this.isgetuser=false;
+						} else {
+							this.$notify.error({
+					                title: '错误',
+					                message: res.data.msg,
+					                duration: 1000,
+					                offset: 100
+								}); 
+							this.isgetuser=false;
+						}
+					}).catch(function(err){
+						console.log(err);
+						_this.isgetuser=false;
+						_this.$notify.error({
+							title: '错误',
+							message: '遇到了未知的问题请联系管理员解决',
+							duration: 0
+						});
+					});
 					this.$message({
 						type: 'success',
-						message: '你的邮箱是: ' + value
+						message: '你的理由是: ' + value
 					});
 				}).catch((e) => {
 					console.log(e);
@@ -366,7 +365,7 @@ import store from '../vuex/store';
                     date_s:this.YMDdata(this.time_register[0]),
                     date_e:this.YMDdata(this.time_register[1]),
                 }
-				this.uid==null||this.uid==""?delete data.find:delete data.date_s, delete data.date_e, data.find=this.uid;
+				this.uid==null||this.uid==""?delete data.find:(delete data.date_s, delete data.date_e, data.find=this.uid);
 				
 				this.value==null||this.value==""?delete data.channel:data.channel=this.value;
                 allget(data, url).then(data => {
