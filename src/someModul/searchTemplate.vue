@@ -48,9 +48,24 @@
                 options: [],
                 value: "",
                 uid: null, 
+                getdata:null,
             }
         },
-        props:['message']
+        //这个参数用来接受父组件的值是一个数组
+        props:['message'],
+        methods:{
+            getUser(){
+                //使用$emit 可以把子组件的参数传给父组件 记得要在父组件使用v-bing 或者是 $on 显示的调用Userdata
+                this.$emit('Userdata',this.getdata);   
+            }, 
+            handleDownload(){
+                //第二个参数是可以不传的
+                this.$emit('handleDownload');     
+            },
+        },
+        computed:{
+            //为了不影响父组件传过来的值 可以在计算属性这里进行  改变  不会影响到父组件   
+        },
     }
 
 </script>

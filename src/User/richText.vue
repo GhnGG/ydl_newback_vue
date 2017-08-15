@@ -1,6 +1,7 @@
 <template>
 	<section>
-		<searchTemplate :message="msg"></searchTemplate>
+		<!-- 这里 的page 是需要互相影响的所以要使用  sync 这个修饰符（是指父子组件的这个值是互相影响的） -->
+		<searchTemplate :message="msg" :page.sync="page" @getUser="showdata"></searchTemplate>
 		<richTextModel></richTextModel>
 	</section>
 	
@@ -23,7 +24,10 @@ import searchTemplate from '../someModul/searchTemplate';
 			
 		},
 		methods: {
-			
+			//这里是父组件显示调用的地方  
+			showdata(data){
+				console.log(data);		
+			},
 		},
 		mounted() {
 			
